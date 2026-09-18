@@ -1,0 +1,110 @@
+<tifffile.TiffTag 305 @63570062> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @63570062> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @63570062> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @63570062> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @63570062> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @63570062> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @63570062> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @63570062> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @63570062> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @63570062> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @63570062> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @63570062> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @27263118> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @27263118> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @27263118> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @94361742> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @94361742> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @94361742> coercing invalid ASCII to bytes
+
+=== 5_SWU_Sh_L_D shape=(1940, 8192) dtype=float32 | 11_SWU_Sh_L_D_Proc shape=(1940, 8192) dtype=float32
+raw null(-999) count=6044938 (38.036%), valid min/max=-31.993/40.189, unique sentinel vals=[-999.]
+rows with >50% null: 689/1940, cols with >50% null: 0/8192
+null% by row-band (top->bottom): ['100.0', '100.0', '99.9', '12.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '2.2', '82.3', '82.0', '53.4', '46.5', '82.5', '100.0']
+null% by col-band (left->right): ['31.8', '44.9', '43.7', '31.8', '33.7', '45.2', '39.7', '34.4', '36.7', '45.4', '36.4', '33.5', '39.5', '45.2', '33.7', '31.8', '44.1', '44.6', '31.7', '32.9']
+valid CC count=248; top5 areas=[8698397, 210404, 207987, 207835, 205197]; largest covers 88.331% of valid
+proc==0 count=7896551 (49.687%); proc==0 & raw valid = 1851613; raw null & proc!=0 = 0
+proc==255 count=798142 (5.022%)
+interior null count=4300917 (30.928% of interior)
+null CC count=644; largest=3555555; >1000px: 2; >100px: 22; median=5
+   null comp area=3555555 bbox x=0 y=1351 w=8192 h=589
+   null comp area=2478064 bbox x=0 y=0 w=8192 h=320
+   null comp area=670 bbox x=4246 y=1340 w=132 h=14
+intensity min/max=0.0/255.0; intensity==0 count=6044938; intensity==0 & raw null=6044938
+
+=== 7_SWU_Sh_R_D shape=(1940, 8192) dtype=float32 | 12_SWU_Sh_R_D_Proc shape=(1940, 8192) dtype=float32
+raw null(-999) count=5321004 (33.481%), valid min/max=-53.189/18.654, unique sentinel vals=[-999.]
+rows with >50% null: 496/1940, cols with >50% null: 617/8192
+null% by row-band (top->bottom): ['100.0', '66.2', '36.8', '40.8', '44.4', '47.6', '60.3', '83.5', '47.3', '0.0', '0.5', '0.5', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '41.8', '100.0']
+null% by col-band (left->right): ['21.6', '47.6', '43.0', '21.7', '25.2', '50.1', '35.3', '24.3', '31.3', '49.9', '28.5', '22.7', '38.2', '49.3', '23.2', '21.3', '46.1', '45.2', '21.3', '23.7']
+valid CC count=229; top5 areas=[7972972, 474954, 471427, 471009, 469443]; largest covers 75.420% of valid
+proc==0 count=8605224 (54.147%); proc==0 & raw valid = 3284220; raw null & proc!=0 = 0
+proc==255 count=797926 (5.021%)
+interior null count=3607593 (25.943% of interior)
+null CC count=1195; largest=4186607; >1000px: 2; >100px: 4; median=4
+   null comp area=4186607 bbox x=0 y=0 w=8192 h=845
+   null comp area=1126429 bbox x=0 y=1794 w=8192 h=146
+   null comp area=170 bbox x=7359 y=834 w=72 h=8
+intensity min/max=0.0/255.0; intensity==0 count=5321004; intensity==0 & raw null=5321004
+
+=== 17_SWD_Sh_L_D shape=(1940, 8192) dtype=float32 | 23_SWD_Sh_L_D_Proc shape=(1940, 8192) dtype=float32
+raw null(-999) count=6008027 (37.804%), valid min/max=-31.959/42.822, unique sentinel vals=[-999.]
+rows with >50% null: 679/1940, cols with >50% null: 0/8192
+null% by row-band (top->bottom): ['100.0', '100.0', '89.1', '7.2', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '9.6', '86.0', '82.0', '53.3', '46.5', '82.4', '100.0']
+null% by col-band (left->right): ['30.7', '44.2', '43.4', '31.6', '33.8', '45.4', '40.0', '34.7', '37.3', '45.9', '36.6', '33.6', '39.2', '44.5', '32.5', '30.7', '43.4', '44.3', '31.3', '33.0']
+valid CC count=396; top5 areas=[8724423, 213512, 208386, 207909, 207851]; largest covers 88.264% of valid
+proc==0 count=7878929 (49.576%); proc==0 & raw valid = 1870902; raw null & proc!=0 = 0
+proc==255 count=799857 (5.033%)
+interior null count=4265826 (30.676% of interior)
+null CC count=449; largest=3631667; >1000px: 4; >100px: 54; median=6
+   null comp area=3631667 bbox x=0 y=1312 w=8192 h=628
+   null comp area=2354755 bbox x=0 y=0 w=8192 h=325
+   null comp area=2440 bbox x=7418 y=1334 w=383 h=24
+intensity min/max=0.0/255.0; intensity==0 count=6008027; intensity==0 & raw null=6008027
+
+=== 19_SWD_Sh_R_D shape=(1940, 8192) dtype=float32 | 24_SWD_Sh_R_D_Proc shape=(1940, 8192) dtype=float32
+raw null(-999) count=5372598 (33.806%), valid min/max=-53.170/19.094, unique sentinel vals=[-999.]
+rows with >50% null: 498/1940, cols with >50% null: 1449/8192
+null% by row-band (top->bottom): ['100.0', '66.3', '36.8', '40.8', '44.4', '47.6', '60.3', '83.4', '52.8', '0.0', '0.5', '0.2', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '43.0', '100.0']
+null% by col-band (left->right): ['21.9', '47.7', '43.3', '22.1', '25.5', '50.5', '35.7', '24.9', '31.7', '50.5', '29.0', '23.2', '38.5', '49.4', '23.4', '21.6', '46.1', '45.6', '21.6', '24.0']
+valid CC count=249; top5 areas=[7913784, 478227, 473165, 471472, 470456]; largest covers 75.227% of valid
+proc==0 count=8689803 (54.679%); proc==0 & raw valid = 3317205; raw null & proc!=0 = 0
+proc==255 count=799346 (5.030%)
+interior null count=3658154 (26.306% of interior)
+null CC count=1451; largest=4225703; >1000px: 2; >100px: 5; median=4
+   null comp area=4225703 bbox x=0 y=0 w=8192 h=860
+   null comp area=1136139 bbox x=0 y=1793 w=8192 h=147
+   null comp area=119 bbox x=4508 y=834 w=35 h=12
+intensity min/max=0.0/255.0; intensity==0 count=5372598; intensity==0 & raw null=5372598
+
+=== 3_SWU_Bead_D shape=(832, 8192) dtype=float32 | 10_SWU_Bead_D_Proc shape=(832, 8192) dtype=float32
+raw null(-999) count=2552944 (37.457%), valid min/max=-17.333/3.895, unique sentinel vals=[-999.]
+rows with >50% null: 310/832, cols with >50% null: 0/8192
+null% by row-band (top->bottom): ['0.5', '0.5', '0.6', '0.4', '0.0', '0.0', '0.1', '0.1', '0.0', '0.1', '0.0', '0.0', '45.7', '100.0', '100.0', '100.0', '100.0', '100.0', '100.0', '100.0']
+null% by col-band (left->right): ['36.7', '37.0', '37.4', '37.2', '38.0', '38.3', '38.3', '38.1', '38.0', '37.8', '37.4', '37.3', '37.2', '37.3', '36.9', '36.7', '37.0', '37.4', '37.2', '37.9']
+valid CC count=163; top5 areas=[4262594, 4, 4, 4, 4]; largest covers 99.995% of valid
+proc==0 count=2825175 (41.451%); proc==0 & raw valid = 272231; raw null & proc!=0 = 0
+proc==255 count=344241 (5.051%)
+interior null count=1687406 (33.408% of interior)
+null CC count=801; largest=2545308; >1000px: 1; >100px: 1; median=2
+   null comp area=2545308 bbox x=0 y=510 w=8192 h=322
+   null comp area=88 bbox x=1015 y=92 w=13 h=29
+   null comp area=85 bbox x=7189 y=91 w=11 h=29
+intensity min/max=0.0/255.0; intensity==0 count=2552944; intensity==0 & raw null=2552944
+
+=== 1_SWU_Cen_D shape=(1940, 12160) dtype=float32 | 9_SWU_Cen_D_Proc shape=(1940, 12160) dtype=float32
+raw null(-999) count=3160359 (13.397%), valid min/max=-45.334/-16.953, unique sentinel vals=[-999.]
+rows with >50% null: 260/1940, cols with >50% null: 0/12160
+null% by row-band (top->bottom): ['100.0', '100.0', '13.7', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '0.0', '54.3']
+null% by col-band (left->right): ['13.4', '13.4', '13.3', '13.5', '13.5', '13.3', '13.2', '13.3', '13.3', '13.3', '13.3', '13.5', '13.4', '13.4', '13.5', '13.4', '13.4', '13.3', '13.4', '13.5']
+valid CC count=3; top5 areas=[20430039, 1, 1]; largest covers 100.000% of valid
+proc==0 count=3825576 (16.217%); proc==0 & raw valid = 665217; raw null & proc!=0 = 0
+proc==255 count=1343967 (5.697%)
+interior null count=1282336 (6.162% of interior)
+null CC count=3; largest=2520290; >1000px: 2; >100px: 2; median=640066
+   null comp area=2520290 bbox x=0 y=0 w=12160 h=218
+   null comp area=640066 bbox x=0 y=1882 w=12160 h=58
+   null comp area=3 bbox x=1974 y=209 w=1 h=3
+intensity min/max=0.0/209.0; intensity==0 count=3160359; intensity==0 & raw null=3160359
+
+DONE

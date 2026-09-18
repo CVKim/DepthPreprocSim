@@ -1,0 +1,44 @@
+{
+ "5_SWU_Sh_L_D": {
+  "null": 6044938,
+  "null_pct": 38.03646756201675,
+  "cc_valid": 248,
+  "proc_zero": 7896551,
+  "proc_zero_valid": 1851613
+ },
+ "7_SWU_Sh_R_D": {
+  "null": 5321004,
+  "null_pct": 33.481269128543815,
+  "cc_valid": 229,
+  "proc_zero": 8605224,
+  "proc_zero_valid": 3284220
+ },
+ "17_SWD_Sh_L_D": {
+  "null": 6008027,
+  "null_pct": 37.80421306177513,
+  "cc_valid": 396,
+  "proc_zero": 7878929,
+  "proc_zero_valid": 1870902
+ },
+ "19_SWD_Sh_R_D": {
+  "null": 5372598,
+  "null_pct": 33.80591323695232,
+  "cc_valid": 249,
+  "proc_zero": 8689803,
+  "proc_zero_valid": 3317205
+ },
+ "3_SWU_Bead_D": {
+  "null": 2552944,
+  "null_pct": 37.45657113882211,
+  "cc_valid": 163,
+  "proc_zero": 2825175,
+  "proc_zero_valid": 272231
+ },
+ "1_SWU_Cen_D": {
+  "null": 3160359,
+  "null_pct": 13.396801241182853,
+  "cc_valid": 3,
+  "proc_zero": 3825576,
+  "proc_zero_valid": 665217
+ }
+}

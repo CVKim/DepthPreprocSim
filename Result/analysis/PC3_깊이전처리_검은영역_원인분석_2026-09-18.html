@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>PC3 깊이 전처리(_Proc) 검은 영역 원인 분석</title>
+<style>
+  body { font-family: "Malgun Gothic", "Noto Sans KR", system-ui, sans-serif; max-width: 1180px; margin: 24px auto; padding: 0 16px; color: #1c1c1c; line-height: 1.55; background: #fff; }
+  h1 { font-size: 24px; border-bottom: 3px solid #234; padding-bottom: 6px; }
+  h2 { font-size: 19px; margin-top: 34px; border-left: 6px solid #2a6f97; padding-left: 10px; }
+  h3 { font-size: 16px; margin-top: 22px; color: #234; }
+  table { border-collapse: collapse; margin: 10px 0 16px; font-size: 13.5px; }
+  th, td { border: 1px solid #c8ccd0; padding: 5px 9px; text-align: left; vertical-align: top; }
+  th { background: #eef2f5; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .box { background: #f4f7f9; border: 1px solid #d5dbe0; border-radius: 6px; padding: 12px 16px; margin: 12px 0; }
+  .warn { background: #fff5e6; border-color: #f0c070; }
+  .bad { color: #b3261e; font-weight: 600; }
+  .ok { color: #1b6e3a; font-weight: 600; }
+  code, pre { font-family: Consolas, "D2Coding", monospace; font-size: 12.5px; }
+  pre { background: #f7f7f7; border: 1px solid #e0e0e0; padding: 10px; overflow-x: auto; }
+  img { max-width: 100%; border: 1px solid #ccc; display: block; margin: 6px 0 4px; }
+  .cap { font-size: 12.5px; color: #555; margin-bottom: 14px; }
+  .small { font-size: 12.5px; color: #555; }
+  ul { margin-top: 4px; }
+  li { margin: 3px 0; }
+</style>
+</head>
+<body>
+<h1>PC3 깊이 전처리(_Proc) 검은 영역 원인 분석</h1>
+<p class="small">작성 2026-09-18 · 대상 <code>H:\000. PJT\01. HankookTire\03_이미지\PC3\1639390184_2000026091709423060</code> (2026-09-17 09:45 저장) · 이미지 11/12/23/24(_Proc) 와 원본 5/7/17/19 · 코드 <code>E:\talos-platform\src\Vision\fovAlg\alg_depth_preproc\3dDepthProcessing.cpp</code> · 레시피 <code>D:\AIV\MODEL\[1]TireInspect_PC3_DEPLOY\FOVPROC.ini / alg_depth_preproc.ini</code></p>
+
+<h2>1. 결론</h2>
+<div class="box">
+<ol>
+<li><b>타이어 안쪽의 검은 띠(2번 사진)는 null 이 아니다.</b> 띠 안 검은 픽셀의 98.8% 가 유효 depth 값이며, <code>postClipNormalize</code> 의 <b>하위 5% 클리핑이 값 0(검정)으로 정규화</b>되어 생긴 것이다. 숄더 경사가 가장 급한 구간(경사 약 60°, R 센서 행 1013~1161, L 센서 행 1092~1203)에서 내부 라이너 벌집 셀 바닥이 국소 기준면보다 0.35~0.55 mm 낮아 클립 임계(−0.19~−0.21 mm)를 넘는 픽셀이 20~33% 몰려 띠로 보인다. 벌집 무늬가 없는 타이어(1번 사진으로 추정)에서는 같은 5% 가 리브 골에 흩어져 띠가 안 보인다. 즉 <b>타이어 패턴 의존 현상</b>이다.</li>
+<li><b>진짜 null(−999)</b> 은 두 가지다. (a) 스테이지 지그 사이의 공기 영역: 센서가 표면을 못 보는 곳으로 화상의 33~38%, 검정 표시가 정상. (b) 타이어 띠 안의 미세 dropout: 띠 픽셀의 0.1~0.4%(7,890~34,534 px), 최대 덩어리 3,445 px(약 577×28) 수준으로 검사 영향은 미미하다.</li>
+<li><b>현장 DLL(1.0.2.0)에는 <code>removeStageFromRawData</code>(최대 연결성분만 유지, 나머지 −999) 가 들어 있다.</b> 지그(사다리꼴 블록)가 _Proc 에서 검게 지워진 것이 증거이며, 파이썬 재구현으로 검정 마스크가 99.6% 일치한다. 이 코드는 미병합 브랜치 <code>feat/ALG-288-stage-ignore-preproc</code>(5/15) 에만 있고 한국타이어 플랫폼 브랜치 <code>TTM-314</code>(8/24) 에는 없다 → <span class="bad">플랫폼 재빌드·재배포 시 지그가 되살아나는 회귀 위험</span>. 같은 커밋에는 매 INSPECT 마다 <code>E:\debug_input_after_proc.mim</code>(63~94 MB) 을 쓰는 디버그 저장이 살아 있어 <b>PC3 에서 해당 파일 존재·시각 확인이 필요</b>하다.</li>
+<li>null 이 정규화에 주는 영향은 2차적이다. 백분위를 null 포함 전 픽셀로 계산해 타이어 띠 기준 실효 클리핑이 5% → 8.6~9.0% 로 커진다. 유효 픽셀만으로 바꾸면 5.1% 로 줄지만 <b>급경사 구간의 띠는 26.7% 로 남는다</b>. 띠 자체를 없애려면 클립 비율·정규화 방식(mm 절대 스케일) 변경이 필요하고, 이는 3D 모델 입력 분포가 바뀌므로 재학습과 함께 가야 한다.</li>
+<li>부수 발견: <code>alg_depth_preproc.ini</code> 의 <code>Lower/Upper Percentage</code> 는 읽기만 하고 <b>사용되지 않는다</b>(코드에 5/95 하드코딩). ini 로는 클립을 바꿀 수 없다.</li>
+</ol>
+</div>
+
+<h2>2. 검은 영역의 세 가지 정체</h2>
+<table>
+<tr><th>구분</th><th>_Proc 에서의 모습</th><th>원본 depth</th><th>비중(숄더 8192×1940 기준)</th><th>판단</th></tr>
+<tr><td>① 지그 사이 공기</td><td>화상 상·하부의 큰 검정 영역</td><td>−999 (센서 무데이터, intensity 도 0)</td><td class="num">33~38% (null 전체)</td><td class="ok">정상. 채울 대상 아님</td></tr>
+<tr><td>② 스테이지 지그(사다리꼴 블록)</td><td>검정 (지워짐)</td><td>유효값 (z≈−53 mm)</td><td class="num">R 센서 20.7%, L 센서 11.7%</td><td>DLL 의 removeStage 가 −999 로 치환. 의도된 동작이나 미병합 코드</td></tr>
+<tr><td>③ 타이어 띠 안 검은 띠·점</td><td>급경사 구간의 벌집 셀 바닥이 검정, 흰 셀 벽이 점처럼 보임</td><td><b>유효값</b> (기준면 대비 −0.2 mm 이하)</td><td class="num">띠 픽셀의 8.1~9.0% (그중 실제 null 0.1~0.4%)</td><td class="bad">문의 대상. 하위 5% 클리핑 산물</td></tr>
+</table>
+
+<h3>2-1. 이미지별 실측</h3>
+<table>
+<tr><th>원본 → _Proc</th><th class="num">null(−999) %</th><th class="num">타이어 띠 행 범위</th><th class="num">유효 연결성분 수 / 최대 성분 비중</th><th class="num">_Proc 검정 중 원본 유효</th><th class="num">띠 안 검정 %</th><th class="num">띠 안 흰색(255) %</th><th class="num">띠 안 실제 null 구멍</th></tr>
+<tr><td>5_SWU_Sh_L_D → 11</td><td class="num">38.04</td><td class="num">286~1378</td><td class="num">248 / 88.3%</td><td class="num">1,851,613 px</td><td class="num">8.08</td><td class="num">9.18</td><td class="num">11,499 px (761개, 최대 670)</td></tr>
+<tr><td>7_SWU_Sh_R_D → 12</td><td class="num">33.48</td><td class="num">814~1808</td><td class="num">229 / 75.4%</td><td class="num">3,284,220 px</td><td class="num">8.60</td><td class="num">10.01</td><td class="num">7,890 px (1,183개, 최대 170)</td></tr>
+<tr><td>17_SWD_Sh_L_D → 23</td><td class="num">37.80</td><td class="num">255~1371</td><td class="num">396 / 88.3%</td><td class="num">1,870,902 px</td><td class="num">8.15</td><td class="num">9.17</td><td class="num">34,534 px (552개, 최대 3,445)</td></tr>
+<tr><td>19_SWD_Sh_R_D → 24</td><td class="num">33.81</td><td class="num">821~1809</td><td class="num">249 / 75.2%</td><td class="num">3,317,205 px</td><td class="num">8.99</td><td class="num">10.10</td><td class="num">11,588 px (1,470개, 최대 225)</td></tr>
+<tr><td>3_SWU_Bead_D → 10 (참고)</td><td class="num">37.46</td><td class="num">-</td><td class="num">163 / 99.995%</td><td class="num">272,231 px</td><td class="num">-</td><td class="num">5.05</td><td class="num">-</td></tr>
+<tr><td>1_SWU_Cen_D → 9 (참고)</td><td class="num">13.40</td><td class="num">-</td><td class="num">3 / 100%</td><td class="num">665,217 px</td><td class="num">-</td><td class="num">5.70</td><td class="num">-</td></tr>
+</table>
+<p class="small">"_Proc 검정 중 원본 유효" = 지워진 지그(②) + 하위 클리핑(③). intensity==0 픽셀 집합이 depth −999 집합과 정확히 일치해 null 은 센서 단계에서 발생한 것임을 확인했다(grab 플러그인 <code>GocatorSensor.cpp</code> 가 0x8000 → −999.f 치환).</p>
+
+<h3>2-2. 원본(null=빨강) · 현장 _Proc · intensity (12_SWU_Sh_R_D)</h3>
+<img src="img/7_SWU_Sh_R_D_raw_nullred.png" alt="raw"><div class="cap">원본 7_SWU_Sh_R_D (1/8): 위쪽 사다리꼴 = 스테이지 지그(유효값), 빨강 = null(공기), 아래 띠 = 타이어 숄더</div>
+<img src="img/12_SWU_Sh_R_D_Proc_proc.png" alt="proc"><div class="cap">현장 _Proc 12: 지그까지 검정(removeStage). 띠 상단 경계에 흰 halo, 그 아래 어두운 띠</div>
+<img src="img/8_SWU_Sh_R_I_int.png" alt="intensity"><div class="cap">intensity 8: depth null 위치와 정확히 일치</div>
+
+<h2>3. 검은 띠의 물리적 원인 (12_SWU_Sh_R_D_Proc, 행 50개 단위)</h2>
+<p>스케일: 띠 z 범위 −36.07~18.65 mm → 1 mm = 1,197 단위. 현장 클립 임계 low = −246 단위(<b>−0.205 mm</b>), high = 486(0.406 mm). 화소 픽셀의 49.0% 가 diff==0(null) 이라 백분위가 왜곡된다.</p>
+<table>
+<tr><th class="num">bin</th><th class="num">행</th><th class="num">평균 z (mm)</th><th class="num">diff p5 (mm)</th><th class="num">diff p50</th><th class="num">diff p95</th><th class="num">현장 검정 %</th><th class="num">diff&lt;low 비율 %</th></tr>
+<tr><td class="num">0</td><td class="num">814~862</td><td class="num">7.32</td><td class="num">−0.359</td><td class="num">0.057</td><td class="num">11.51</td><td class="num">14.9</td><td class="num">13.2</td></tr>
+<tr><td class="num">1</td><td class="num">863~912</td><td class="num">8.68</td><td class="num">−0.179</td><td class="num">0.015</td><td class="num">0.220</td><td class="num">3.3</td><td class="num">2.9</td></tr>
+<tr><td class="num">2</td><td class="num">913~962</td><td class="num">5.78</td><td class="num">−0.161</td><td class="num">0.014</td><td class="num">0.211</td><td class="num">2.2</td><td class="num">2.0</td></tr>
+<tr><td class="num">3</td><td class="num">963~1012</td><td class="num">0.50</td><td class="num">−0.305</td><td class="num">0.002</td><td class="num">0.350</td><td class="num">12.3</td><td class="num">11.8</td></tr>
+<tr style="background:#fdecea"><td class="num">4</td><td class="num">1013~1061</td><td class="num">−8.78</td><td class="num"><b>−0.553</b></td><td class="num">−0.066</td><td class="num">0.779</td><td class="num"><b>30.6</b></td><td class="num">32.9</td></tr>
+<tr style="background:#fdecea"><td class="num">5</td><td class="num">1062~1111</td><td class="num">−19.42</td><td class="num"><b>−0.427</b></td><td class="num">−0.087</td><td class="num">0.593</td><td class="num"><b>26.3</b></td><td class="num">29.3</td></tr>
+<tr style="background:#fdecea"><td class="num">6</td><td class="num">1112~1161</td><td class="num">−26.58</td><td class="num"><b>−0.345</b></td><td class="num">−0.072</td><td class="num">0.372</td><td class="num"><b>21.4</b></td><td class="num">20.8</td></tr>
+<tr><td class="num">7</td><td class="num">1162~1211</td><td class="num">−30.91</td><td class="num">−0.282</td><td class="num">−0.053</td><td class="num">0.302</td><td class="num">14.2</td><td class="num">13.4</td></tr>
+<tr><td class="num">8</td><td class="num">1212~1260</td><td class="num">−33.46</td><td class="num">−0.248</td><td class="num">−0.038</td><td class="num">0.278</td><td class="num">10.1</td><td class="num">9.4</td></tr>
+<tr><td class="num">9~18</td><td class="num">1261~1758</td><td class="num">−34.8 → 0.7</td><td class="num">−0.15~−0.20</td><td class="num">≈0</td><td class="num">0.26~1.04</td><td class="num">2.4~5.3</td><td class="num">2.1~4.8</td></tr>
+<tr><td class="num">19</td><td class="num">1759~1808</td><td class="num">10.57</td><td class="num">−0.089</td><td class="num">0.415</td><td class="num">6.61</td><td class="num">4.7</td><td class="num">1.8</td></tr>
+</table>
+<ul>
+<li>bin 4~6 은 평균 z 가 50행마다 9~11 mm 떨어지는 <b>최급경사 구간</b>(행 피치 100 µm → 경사 약 60°)이다. 여기서 diff 의 하위 5%(p5) 가 −0.35~−0.55 mm 로 평탄부(−0.16 mm) 의 2~3배가 되어 임계 −0.205 mm 아래로 20~33% 가 떨어진다. "현장 검정 %" 와 "diff&lt;low 비율" 이 일치하므로 검정 = 하위 클리핑임이 확정된다.</li>
+<li>L 센서(17→23) 도 대칭 위치인 bin 15~16(행 1092~1203, 평균 z −7.2 → 10.1 mm) 에서 p5 −0.42~−0.45 mm, 검정 24.2/18.8% 로 같은 현상이다.</li>
+<li>bin 0(띠 상단 경계) 의 검정 14.9% 와 흰 halo 는 경계 밖 null(0) 이 15×15 패치 median 을 끌어내려 생기는 경계 효과다.</li>
+</ul>
+<img src="img/compare_12_SWU_Sh_R_D_Proc_band_top.png" alt="compare top"><div class="cap">12_SWU_Sh_R_D_Proc 띠 상단 671×341 크롭(x=0): 원본(null 빨강) / 현장 출력 / 변형 V1·V2·V4·V5. 2번 사진은 이 영역을 축소한 것으로 추정</div>
+<img src="img/compare_23_SWD_Sh_L_D_Proc_band_bottom.png" alt="compare 23 bottom"><div class="cap">23_SWD_Sh_L_D_Proc 띠 하단 크롭: L 센서는 위·아래가 뒤집혀 같은 현상이 하단에 나타남</div>
+
+<h2>4. 코드 경로 (현장 DLL 기준)</h2>
+<pre>FOVPROC0003/0004/0007/0008 (RequireImgIdx 5/7/17/19 → ResultImgIdx 11/12/23/24, ParamIdx 3 = [CAL0003] INSHOULDER, PatchSize 15,15, Overlap 0.25, ROI 9999,9999,0,0)
+  └ alg_depth_preproc.dll  PREPROC_3D_Initial → C3DPreprocess::INSPECT
+      1. MbufSave(L"E:\\debug_input_after_proc.mim")      ← ALG-288 커밋에 살아 있는 디버그 저장 (63~94 MB/호출)
+      2. DeepCopyMil2OpencvFloat                          32-bit float 원본 (null = -999.f)
+      3. removeStageFromRawData(src, StagePosition=AUTO)  유효(> -900) 픽셀 8-연결 성분 중 최대 1개만 남기고 나머지 -999
+      4. processHighCurvature(src, 15x15, 0.25)
+           null_mask = (data == -999)
+           scaleTo16bitIgnoreNull : 유효 min/max 로 0..65536 스케일, null → 0
+           patchBasedMedian       : 15x15, step 11, null(=0) 포함 median → 격자(176x744) 를 INTER_LINEAR 로 확대 = 기준면
+           diff = scaled - basis  → int16 절단
+           postClipNormalize(diff, 5, 95)  : null 포함 전 픽셀 백분위(std::sort 2회) 로 클립 → NORM_MINMAX 0..255
+           anomaly.setTo(0, null_mask)     : null → 0
+      5. CopyOpencv2Mil_KeepBuffer_If32 → 출력 MIL 버퍼(32-bit float 에 0..255 값)</pre>
+<div class="box warn">
+<b>출력값 0 의 의미가 두 가지다.</b> null(−999) 와 "diff ≤ 하위 클립" 이 모두 0 으로 나가므로, 후단 3D_SHOULDER 모델은 구멍과 깊은 골을 구분할 수 없다. 사용자가 검은 띠를 null 로 보신 것도 이 때문이다.
+</div>
+<h3>4-1. 코드 관련 발견 사항</h3>
+<table>
+<tr><th>#</th><th>항목</th><th>내용</th><th>영향</th></tr>
+<tr><td>1</td><td>현장 DLL 정체</td><td>PC3 로그(7/29, 9/14) 모두 <code>alg_depth_preproc.dll 1.0.2.0</code>. 1.0.2.0 rc 는 4/17~5/8 CI 커밋(removeStage 없음)인데 현장 출력은 지그가 지워져 있음 → rc 를 올리지 않은 <b>ALG-288 WIP 로컬 빌드</b>로 판단. 이 PC 의 <code>E:\talos-vision\bin\...\alg_depth_preproc.dll</code>(1.0.2.0, 5/13) 는 removeStage 문자열이 없어 현장 파일과 다르다.</td><td>현장 DLL 과 일치하는 소스가 리포지토리에 없음(가장 근접: 0a6814f2)</td></tr>
+<tr><td>2</td><td>브랜치 불일치</td><td>removeStage 는 <code>feat/ALG-288-stage-ignore-preproc</code>(0a6814f2, 5/15) 에만 존재. 한국타이어 플랫폼 브랜치 <code>TTM-314-All_About_HankookTire</code>(afd64bc4, 8/24) 의 같은 파일은 removeStage 없음, 디버그 저장은 주석 상태.</td><td class="bad">TTM-314 로 재빌드하면 지그가 _Proc 에 다시 나타나 모델 입력이 바뀜</td></tr>
+<tr><td>3</td><td>디버그 저장</td><td>0a6814f2 의 720행 <code>MbufSave(L"E:\\debug_input_after_proc.mim", m_vecInput[0]);</code> 가 주석 해제 상태. 현장 WIP 빌드에 포함됐는지는 <b>PC3 에서 파일 존재로 확인</b>해야 함(현장 FOVPROC 소요: 센터 3.0 s, 숄더 1.3 s, 비드 0.6 s 중앙값, 9/14 58회).</td><td>디스크 쓰기 8회/타이어, 최대 약 630 MB/타이어</td></tr>
+<tr><td>4</td><td>ini 키 무효</td><td><code>Lower Percentage / Upper Percentage</code> 는 <code>m_lowerPct/m_upper_pct</code> 에 읽기만 하고 <code>postClipNormalize(diff_float, 5, 95)</code> 로 하드코딩 호출. TTM-314 도 동일.</td><td>ini 로 클립 조정 불가</td></tr>
+<tr><td>5</td><td>removeStage 취약점</td><td>최대 성분 1개만 유지. 타이어 띠가 null 로 완전히 끊기면(전폭 dropout 등) 작은 쪽이 통째로 검정이 됨. 이번 타이어는 구멍이 작아 미발생.</td><td>잠재 회귀. 면적 임계 방식이 안전</td></tr>
+<tr><td>6</td><td>미사용 코드</td><td><code>incenter_processing / shoulder_processing / IncenterProcessing / InShoulderProcessing / DeepCopyMil2OpencvNormalize / processInnerCenter</code> 는 호출되지 않음. INNERCENTER/BEAD/INSHOULDER 세 타입 모두 processHighCurvature 로 동일 처리.</td><td>정리 대상</td></tr>
+<tr><td>7</td><td>성능</td><td><code>computePercentile</code> 가 16M float 을 <code>std::sort</code> 로 2회 정렬. <code>nth_element</code> 또는 히스토그램으로 대체 가능.</td><td>숄더 1.3 s 중 상당 부분으로 추정</td></tr>
+</table>
+
+<h2>5. 변형 시뮬레이션 (파이썬 재구현, 7→12 및 17→23)</h2>
+<p>재구현 정합: removeStage 포함 시 검정 마스크 99.6% 일치, 비검정 픽셀의 96.9% 가 ±2 이내(정렬·보간 반올림 차이). removeStage 없이는 2.76M 픽셀이 불일치해 현장 DLL 에 removeStage 가 있음을 확정.</p>
+<table>
+<tr><th>변형</th><th>내용</th><th class="num">12: 띠 검정 %</th><th class="num">12: 최악 bin %</th><th class="num">23: 띠 검정 %</th><th class="num">23: 최악 bin %</th><th>평가</th></tr>
+<tr><td>현장</td><td>-</td><td class="num">8.60</td><td class="num">30.6</td><td class="num">8.15</td><td class="num">27.0</td><td>-</td></tr>
+<tr><td>V0</td><td>재구현(현재 코드)</td><td class="num">8.45</td><td class="num">33.0</td><td class="num">7.63</td><td class="num">24.1</td><td>기준</td></tr>
+<tr><td>V1</td><td>백분위를 유효 픽셀만으로</td><td class="num">5.08</td><td class="num">26.7</td><td class="num">5.09</td><td class="num">19.9</td><td>최소 수정. 검정 40% 감소, 띠는 남음</td></tr>
+<tr><td>V2</td><td>V1 + null 제외 패치 median</td><td class="num">5.07</td><td class="num">54.0(경계 bin)</td><td class="num">5.09</td><td class="num">47.5(경계 bin)</td><td>흰 halo 사라지나 띠 경계 첫 bin 이 검정으로 바뀜 → 경계 처리 별도 필요</td></tr>
+<tr><td>V3</td><td>V2 + 5,000 px 이하 구멍 인페인팅</td><td class="num">5.08</td><td class="num">54.1</td><td class="num">5.00</td><td class="num">53.5</td><td>구멍 7,882/21,587 px 채움. 효과 미미</td></tr>
+<tr><td>V4</td><td>V3 + 클립 2/98%</td><td class="num">2.03</td><td class="num">11.0</td><td class="num">1.98</td><td class="num">7.7</td><td>띠 크게 완화. 대비(콘트라스트) 감소 → 모델 영향</td></tr>
+<tr><td>V5</td><td>V3 + null 을 중간 회색(87/80)</td><td class="num">5.08</td><td class="num">54.1</td><td class="num">5.00</td><td class="num">53.5</td><td>null 과 골을 구분. 모델 입력 분포 변경</td></tr>
+<tr><td>V6</td><td>V3 + 패치 45×15(가로 확대)</td><td class="num">5.07</td><td class="num">53.7</td><td class="num">5.02</td><td class="num">52.4</td><td>띠에 효과 없음</td></tr>
+</table>
+<img src="img/compare_12_SWU_Sh_R_D_Proc_full.png" alt="full compare 12"><div class="cap">12 전체(1/8): 현장 / V1 / V4 / V5</div>
+<img src="img/compare_23_SWD_Sh_L_D_Proc_full.png" alt="full compare 23"><div class="cap">23 전체(1/8): 현장 / V1 / V4 / V5</div>
+
+<h2>6. 해결 방향 제안</h2>
+<table>
+<tr><th>단계</th><th>조치</th><th>효과</th><th>비용·위험</th></tr>
+<tr><td>0. 확인(즉시)</td><td>PC3 에서 <code>E:\debug_input_after_proc.mim</code> 존재·수정시각 확인, 현장 <code>alg_depth_preproc.dll</code> 해시·크기 확보, 현장 플랫폼 소스 계보(어느 브랜치로 빌드했는지) 확인</td><td>디스크 쓰기 제거 가능성, 회귀 위험 판단</td><td>없음</td></tr>
+<tr><td>1. 코드 정리(출력 거의 불변)</td><td>디버그 MbufSave 제거 · removeStage 를 TTM-314 에 반영(면적 임계 옵션 추가) · ini 백분위 키 실제 연결 · rc 버전 상향</td><td>회귀 위험 제거, 파라미터 조정 가능</td><td>결과 비트 동일 유지 가능(5/95 유지 시)</td></tr>
+<tr><td>2. 소폭 개선(V1)</td><td>백분위를 유효 픽셀만으로 계산</td><td>띠 검정 8.6 → 5.1%</td><td>대비가 약간 약해짐(low −0.205 → −0.26 mm). 모델 재검증 필요, 재학습까지는 불필요할 가능성</td></tr>
+<tr><td>3. 근본 개선</td><td>mm 절대 스케일 정규화(예: ±0.5 mm → 0..255, 0 mm = 128) + null 전용 값(0 예약, 유효는 1..255 또는 null=128) + 경계 마스크 median</td><td>타이어 간 일관된 대비, 검은 띠 소멸, null/골 구분</td><td class="bad">3D_SHOULDER·CENTER·BEAD 모델 입력 분포 변경 → 재학습(또는 파인튜닝) 필수</td></tr>
+<tr><td>4. 센서</td><td>Gocator job 의 Gap Filling 확인(현장 <code>D:\AIV\gocator_jobfile\...</code>)</td><td>타이어 내부 dropout 0.1~0.4% 감소</td><td>효과 미미. 지그 사이 null 은 공기라 채울 대상 아님</td></tr>
+</table>
+<p>권장 순서는 0 → 1 → 2 이며, 3 은 모델 재학습 일정과 묶어 별도 검토가 적절하다. 1번 사진 수준의 "깨끗한" 출력을 벌집 패턴 타이어에서 얻으려면 3 이 필요하다.</p>
+
+<h2>7. 근거 자료</h2>
+<ul>
+<li><code>근거자료\analyze.py</code> — null 통계·연결성분·_Proc 대조(로그 <code>analysis.log</code>, <code>summary.json</code>)</li>
+<li><code>근거자료\crops.py</code> — 띠 안 검정/흰색 행 분포, 구멍 크기, 671×341 크롭</li>
+<li><code>근거자료\simulate.py</code> — DLL 파이프라인 재구현·현장 출력 정합 검증(withStage/noStage)</li>
+<li><code>근거자료\variants.py</code> — 변형 V0~V6 (로그 <code>variants.log</code>, <code>variants_*.json</code>)</li>
+<li><code>근거자료\physical.py</code> — mm 환산·행 구간별 p5/p50/p95</li>
+<li><code>근거자료\dllstrings.py</code> — DLL 빌드의 StagePosition/디버그 경로 문자열 검사</li>
+<li><code>img\</code> — 원본(null 빨강)·_Proc·intensity 1/8 축소본, 크롭, 변형 비교 몽타주</li>
+<li>현장 로그: <code>H:\...\02_로그\0914_LOG\Before\14_PC3\{fov_alg.log, depthpreproc.log}</code>, <code>02_로그\0730_PC3_LOG\29\depthpreproc.log</code></li>
+<li>코드: talos-platform <code>0a6814f2</code>(ALG-288), <code>afd64bc4</code>(TTM-314), <code>src/Vision/grab/grab_gocator/GocatorSensor.cpp:833</code>(−999 치환)</li>
+<li>같은 날 별도 작성된 코드 분석 보고서(StagePosition TOP/BOTTOM 미구현, ROI 예외 시 러너 스레드 누수 등): <code>C:\Users\AIV\Desktop\alg_depth_preproc_분석\alg_depth_preproc_코드분석_2026-09-18.md</code></li>
+</ul>
+</body>
+</html>

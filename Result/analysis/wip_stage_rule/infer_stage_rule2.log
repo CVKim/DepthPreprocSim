@@ -1,0 +1,178 @@
+<tifffile.TiffTag 305 @63570062> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @63570062> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @63570062> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @63570062> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @63570062> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @63570062> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @94361742> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @94361742> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @63570062> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @63570062> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @63570062> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @63570062> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @63570062> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @63570062> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @63570062> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @63570062> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @63570062> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @63570062> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @63570062> coercing invalid ASCII to bytes
+<tifffile.TiffTag 305 @63570062> coercing invalid ASCII to bytes
+
+=== 1639390184:7_SWU_Sh_R_D->12_SWU_Sh_R_D_Proc  comps=229 largest_bbox=[0, 814, 8192, 995]
+  R0_none                            exact= 43.590  within2= 54.296  IoU=0.6767  refBlackOnly= 2757831  outBlackOnly=   36384
+  R1_largest_only(source)            exact= 65.119  within2= 98.079  IoU=0.9878  refBlackOnly=   58716  outBlackOnly=   46817
+  R2_area>=50                        exact= 43.606  within2= 54.337  IoU=0.6766  refBlackOnly= 2758412  outBlackOnly=   36233
+  R2_area>=500                       exact= 43.608  within2= 54.339  IoU=0.6766  refBlackOnly= 2758023  outBlackOnly=   36233
+  R2_area>=5000                      exact= 43.608  within2= 54.339  IoU=0.6766  refBlackOnly= 2758023  outBlackOnly=   36233
+  R2_area>=50000                     exact= 43.608  within2= 54.339  IoU=0.6766  refBlackOnly= 2758023  outBlackOnly=   36233
+  R2_area>=200000                    exact= 43.608  within2= 54.339  IoU=0.6766  refBlackOnly= 2758023  outBlackOnly=   36233
+  R3_bbox_rows_intersect_largest     exact= 46.876  within2= 60.226  IoU=0.7331  refBlackOnly= 2268409  outBlackOnly=   38253
+  R4_valid_in_largest_bbox           exact= 71.077  within2= 98.009  IoU=0.9872  refBlackOnly=   63786  outBlackOnly=   46970
+  R5_rowcut_largest_bbox             exact= 71.077  within2= 98.009  IoU=0.9872  refBlackOnly=   63786  outBlackOnly=   46970
+  R6_centroid_in_largest_rows        exact= 65.116  within2= 98.077  IoU=0.9878  refBlackOnly=   59069  outBlackOnly=   46821
+  R7_largest_only_conn4              exact= 65.119  within2= 98.080  IoU=0.9878  refBlackOnly=   58688  outBlackOnly=   46817
+  R8_drop_border_touching            exact= 43.590  within2= 54.296  IoU=0.6767  refBlackOnly= 2757831  outBlackOnly=   36384
+  (27s)
+
+=== 1639390184:5_SWU_Sh_L_D->11_SWU_Sh_L_D_Proc  comps=248 largest_bbox=[0, 286, 8192, 1093]
+  R0_none                            exact= 50.591  within2= 68.552  IoU=0.8367  refBlackOnly= 1270005  outBlackOnly=   23534
+  R1_largest_only(source)            exact= 54.641  within2= 98.803  IoU=0.9900  refBlackOnly=   52536  outBlackOnly=   26592
+  R2_area>=50                        exact= 50.599  within2= 68.560  IoU=0.8368  refBlackOnly= 1268830  outBlackOnly=   23534
+  R2_area>=500                       exact= 50.643  within2= 68.700  IoU=0.8370  refBlackOnly= 1267732  outBlackOnly=   23558
+  R2_area>=5000                      exact= 50.643  within2= 68.700  IoU=0.8370  refBlackOnly= 1267732  outBlackOnly=   23558
+  R2_area>=50000                     exact= 50.643  within2= 68.700  IoU=0.8370  refBlackOnly= 1267732  outBlackOnly=   23558
+  R2_area>=200000                    exact= 51.409  within2= 70.562  IoU=0.8510  refBlackOnly= 1156841  outBlackOnly=   23558
+  R3_bbox_rows_intersect_largest     exact= 54.638  within2= 98.800  IoU=0.9900  refBlackOnly=   52916  outBlackOnly=   26593
+  R4_valid_in_largest_bbox           exact= 54.639  within2= 98.801  IoU=0.9900  refBlackOnly=   52824  outBlackOnly=   26593
+  R5_rowcut_largest_bbox             exact= 54.639  within2= 98.801  IoU=0.9900  refBlackOnly=   52824  outBlackOnly=   26593
+  R6_centroid_in_largest_rows        exact= 54.639  within2= 98.801  IoU=0.9900  refBlackOnly=   52825  outBlackOnly=   26593
+  R7_largest_only_conn4              exact= 54.642  within2= 98.804  IoU=0.9900  refBlackOnly=   52490  outBlackOnly=   26567
+  R8_drop_border_touching            exact= 50.591  within2= 68.552  IoU=0.8367  refBlackOnly= 1270005  outBlackOnly=   23534
+  (25s)
+
+=== 1639390184:19_SWD_Sh_R_D->24_SWD_Sh_R_D_Proc  comps=249 largest_bbox=[0, 821, 8192, 989]
+  R0_none                            exact= 43.929  within2= 54.274  IoU=0.6772  refBlackOnly= 2779598  outBlackOnly=   37585
+  R1_largest_only(source)            exact= 59.137  within2= 97.110  IoU=0.9870  refBlackOnly=   66547  outBlackOnly=   46932
+  R2_area>=50                        exact= 43.906  within2= 54.252  IoU=0.6770  refBlackOnly= 2781365  outBlackOnly=   37365
+  R2_area>=500                       exact= 43.920  within2= 54.384  IoU=0.6773  refBlackOnly= 2778647  outBlackOnly=   37550
+  R2_area>=5000                      exact= 43.920  within2= 54.384  IoU=0.6773  refBlackOnly= 2778647  outBlackOnly=   37550
+  R2_area>=50000                     exact= 43.920  within2= 54.384  IoU=0.6773  refBlackOnly= 2778647  outBlackOnly=   37550
+  R2_area>=200000                    exact= 43.920  within2= 54.384  IoU=0.6773  refBlackOnly= 2778647  outBlackOnly=   37550
+  R3_bbox_rows_intersect_largest     exact= 53.668  within2= 69.188  IoU=0.8182  refBlackOnly= 1545599  outBlackOnly=   41848
+  R4_valid_in_largest_bbox           exact= 59.095  within2= 94.446  IoU=0.9858  refBlackOnly=   77942  outBlackOnly=   46512
+  R5_rowcut_largest_bbox             exact= 59.095  within2= 94.446  IoU=0.9858  refBlackOnly=   77942  outBlackOnly=   46512
+  R6_centroid_in_largest_rows        exact= 59.138  within2= 97.280  IoU=0.9870  refBlackOnly=   66324  outBlackOnly=   46975
+  R7_largest_only_conn4              exact= 59.138  within2= 97.112  IoU=0.9870  refBlackOnly=   66413  outBlackOnly=   46880
+  R8_drop_border_touching            exact= 43.929  within2= 54.274  IoU=0.6772  refBlackOnly= 2779598  outBlackOnly=   37585
+  (30s)
+
+=== 2000026091:1_SWU_Cen_D->9_SWU_Cen_D_Proc  comps=4301 largest_bbox=[0, 234, 12160, 1675]
+  site-kept-but-source-removed px=557665 rows 12..1939 comps=4300 top areas=[253504, 212497, 19941, 13549, 4233]
+     comp area=253504 bbox x=0 y=62 w=4342 h=92
+     comp area=212497 bbox x=8353 y=63 w=3807 h=91
+     comp area=19941 bbox x=7566 y=97 w=786 h=33
+     comp area=13549 bbox x=4345 y=97 w=754 h=32
+     comp area=4233 bbox x=7025 y=107 w=539 h=19
+  R0_none                            exact= 99.992  within2=100.000  IoU=1.0000  refBlackOnly=       0  outBlackOnly=       1
+  R1_largest_only(source)            exact= 18.222  within2= 22.259  IoU=0.7968  refBlackOnly=       4  outBlackOnly=  877026
+  R2_area>=50                        exact= 27.908  within2= 97.478  IoU=0.9962  refBlackOnly=      11  outBlackOnly=   12981
+  R2_area>=500                       exact= 19.696  within2= 22.562  IoU=0.9843  refBlackOnly=       7  outBlackOnly=   54699
+  R2_area>=5000                      exact= 19.644  within2= 22.115  IoU=0.9830  refBlackOnly=       7  outBlackOnly=   59456
+  R2_area>=50000                     exact= 20.649  within2= 27.398  IoU=0.9616  refBlackOnly=       5  outBlackOnly=  137313
+  R2_area>=200000                    exact= 20.649  within2= 27.398  IoU=0.9616  refBlackOnly=       5  outBlackOnly=  137313
+  R3_bbox_rows_intersect_largest     exact= 18.422  within2= 22.456  IoU=0.8030  refBlackOnly=       0  outBlackOnly=  843636
+  R4_valid_in_largest_bbox           exact= 18.344  within2= 22.483  IoU=0.7996  refBlackOnly=       0  outBlackOnly=  862187
+  R5_rowcut_largest_bbox             exact= 18.344  within2= 22.483  IoU=0.7996  refBlackOnly=       0  outBlackOnly=  862187
+  R6_centroid_in_largest_rows        exact= 18.392  within2= 22.309  IoU=0.7996  refBlackOnly=       0  outBlackOnly=  862042
+  R7_largest_only_conn4              exact= 18.220  within2= 22.257  IoU=0.7967  refBlackOnly=       4  outBlackOnly=  877777
+  R8_drop_border_touching            exact= 99.991  within2= 99.999  IoU=1.0000  refBlackOnly=       0  outBlackOnly=     156
+  (39s)
+
+=== 2000026091:7_SWU_Sh_R_D->12_SWU_Sh_R_D_Proc  comps=984 largest_bbox=[0, 749, 8192, 1010]
+  R0_none                            exact= 51.831  within2= 57.867  IoU=0.7704  refBlackOnly= 2156407  outBlackOnly=   79647
+  R1_largest_only(source)            exact= 65.466  within2= 74.462  IoU=0.9563  refBlackOnly=  299548  outBlackOnly=  127787
+  R2_area>=50                        exact= 51.843  within2= 57.869  IoU=0.7706  refBlackOnly= 2154487  outBlackOnly=   79618
+  R2_area>=500                       exact= 51.844  within2= 57.870  IoU=0.7707  refBlackOnly= 2154265  outBlackOnly=   79618
+  R2_area>=5000                      exact= 51.844  within2= 57.870  IoU=0.7707  refBlackOnly= 2154265  outBlackOnly=   79618
+  R2_area>=50000                     exact= 51.844  within2= 57.870  IoU=0.7707  refBlackOnly= 2154265  outBlackOnly=   79618
+  R2_area>=200000                    exact= 52.716  within2= 58.512  IoU=0.7880  refBlackOnly= 1983891  outBlackOnly=   80946
+  R3_bbox_rows_intersect_largest     exact= 51.837  within2= 57.872  IoU=0.7705  refBlackOnly= 2155514  outBlackOnly=   79647
+  R4_valid_in_largest_bbox           exact= 64.248  within2= 74.043  IoU=0.9503  refBlackOnly=  370625  outBlackOnly=  115674
+  R5_rowcut_largest_bbox             exact= 64.248  within2= 74.043  IoU=0.9503  refBlackOnly=  370625  outBlackOnly=  115674
+  R6_centroid_in_largest_rows        exact= 65.463  within2= 74.471  IoU=0.9562  refBlackOnly=  300632  outBlackOnly=  127738
+  R7_largest_only_conn4              exact= 65.013  within2= 73.514  IoU=0.9569  refBlackOnly=  298669  outBlackOnly=  123448
+  R8_drop_border_touching            exact= 51.831  within2= 57.867  IoU=0.7704  refBlackOnly= 2156407  outBlackOnly=   79647
+  (24s)
+DONE
+
+=== 1639390184:7_SWU_Sh_R_D->12_SWU_Sh_R_D_Proc {'stage_top': True, 'largest_bbox': [0, 814, 8192, 995]}
+  R9a_rowcut_all_comps(cut=839,top)            exact= 69.604  within2= 97.514  IoU=0.9834  refBlackOnly=   34156  outBlackOnly=  110818
+  R9b_rowcut_comps>=1000(cut=834)              exact= 58.451  within2= 77.178  IoU=0.9812  refBlackOnly=   44334  outBlackOnly=  119627
+  R10_dilate_largest_D=5                       exact= 65.118  within2= 98.079  IoU=0.9878  refBlackOnly=   58821  outBlackOnly=   46817
+  R10_dilate_largest_D=20                      exact= 66.408  within2= 95.675  IoU=0.9850  refBlackOnly=   84820  outBlackOnly=   45262
+  R10_dilate_largest_D=60                      exact= 67.074  within2= 93.242  IoU=0.9789  refBlackOnly=  137496  outBlackOnly=   45067
+  R11_per_column_longest_run                   exact= 54.827  within2= 58.003  IoU=0.8972  refBlackOnly=  415885  outBlackOnly=  522395
+  R12_per_column_runs>=30                      exact= 43.639  within2= 54.829  IoU=0.6772  refBlackOnly= 2752375  outBlackOnly=   37617
+  R12_per_column_runs>=100                     exact= 44.024  within2= 55.355  IoU=0.6800  refBlackOnly= 2727318  outBlackOnly=   38226
+  R12_per_column_runs>=300                     exact= 38.011  within2= 40.708  IoU=0.6188  refBlackOnly= 2959454  outBlackOnly=  518020
+  R13_per_column_runs_touching_largest         exact= 65.119  within2= 98.079  IoU=0.9878  refBlackOnly=   58716  outBlackOnly=   46817
+  R14_per_row_longest_run                      exact= 53.659  within2= 54.789  IoU=0.8737  refBlackOnly=  509245  outBlackOnly=  661089
+  (50s)
+
+=== 1639390184:5_SWU_Sh_L_D->11_SWU_Sh_L_D_Proc {'stage_top': False, 'largest_bbox': [0, 286, 8192, 1093]}
+  R9a_rowcut_all_comps(cut=1358,bot)           exact= 54.053  within2= 70.174  IoU=0.9793  refBlackOnly=   51431  outBlackOnly=  114477
+  R9b_rowcut_comps>=1000(cut=1383)             exact= 54.638  within2= 98.801  IoU=0.9900  refBlackOnly=   52897  outBlackOnly=   26593
+  R10_dilate_largest_D=5                       exact= 54.640  within2= 98.803  IoU=0.9900  refBlackOnly=   52573  outBlackOnly=   26593
+  R10_dilate_largest_D=20                      exact= 54.637  within2= 98.800  IoU=0.9900  refBlackOnly=   53033  outBlackOnly=   26593
+  R10_dilate_largest_D=60                      exact= 61.522  within2= 98.271  IoU=0.9835  refBlackOnly=  104762  outBlackOnly=   25790
+  R11_per_column_longest_run                   exact= 56.219  within2= 98.061  IoU=0.9812  refBlackOnly=   53457  outBlackOnly=   97151
+  R12_per_column_runs>=30                      exact= 50.436  within2= 66.393  IoU=0.8362  refBlackOnly= 1240675  outBlackOnly=   63040
+  R12_per_column_runs>=100                     exact= 50.332  within2= 65.917  IoU=0.8389  refBlackOnly= 1219191  outBlackOnly=   63075
+  R12_per_column_runs>=300                     exact= 57.308  within2= 79.548  IoU=0.9201  refBlackOnly=  568870  outBlackOnly=   67096
+  R13_per_column_runs_touching_largest         exact= 54.641  within2= 98.803  IoU=0.9900  refBlackOnly=   52536  outBlackOnly=   26592
+  R14_per_row_longest_run                      exact= 52.496  within2= 56.553  IoU=0.9342  refBlackOnly=  285900  outBlackOnly=  249787
+  (30s)
+
+=== 1639390184:19_SWD_Sh_R_D->24_SWD_Sh_R_D_Proc {'stage_top': True, 'largest_bbox': [0, 821, 8192, 989]}
+  R9a_rowcut_all_comps(cut=854,top)            exact= 58.798  within2= 59.847  IoU=0.9748  refBlackOnly=   56949  outBlackOnly=  166459
+  R9b_rowcut_comps>=1000(cut=848)              exact= 63.320  within2= 84.673  IoU=0.9818  refBlackOnly=   26699  outBlackOnly=  133600
+  R10_dilate_largest_D=5                       exact= 59.136  within2= 97.110  IoU=0.9870  refBlackOnly=   66640  outBlackOnly=   46932
+  R10_dilate_largest_D=20                      exact= 62.518  within2= 96.491  IoU=0.9851  refBlackOnly=   83396  outBlackOnly=   46435
+  R10_dilate_largest_D=60                      exact= 62.848  within2= 85.702  IoU=0.9775  refBlackOnly=  151447  outBlackOnly=   44835
+  R11_per_column_longest_run                   exact= 56.804  within2= 61.330  IoU=0.9200  refBlackOnly=  321952  outBlackOnly=  405247
+  R12_per_column_runs>=30                      exact= 44.110  within2= 54.653  IoU=0.6775  refBlackOnly= 2769581  outBlackOnly=   48847
+  R12_per_column_runs>=100                     exact= 44.308  within2= 55.400  IoU=0.6802  refBlackOnly= 2745632  outBlackOnly=   48888
+  R12_per_column_runs>=300                     exact= 40.396  within2= 43.988  IoU=0.6434  refBlackOnly= 2848308  outBlackOnly=  388649
+  R13_per_column_runs_touching_largest         exact= 59.137  within2= 97.110  IoU=0.9870  refBlackOnly=   66547  outBlackOnly=   46932
+  R14_per_row_longest_run                      exact= 53.867  within2= 54.165  IoU=0.8579  refBlackOnly=  536377  outBlackOnly=  813680
+  (32s)
+
+=== 2000026091:7_SWU_Sh_R_D->12_SWU_Sh_R_D_Proc {'stage_top': True, 'largest_bbox': [0, 749, 8192, 1010]}
+  R9a_rowcut_all_comps(cut=1253,top)           exact= 62.373  within2= 62.884  IoU=0.7345  refBlackOnly=   54744  outBlackOnly= 3418160
+  R9b_rowcut_comps>=1000(cut=880)              exact= 63.691  within2= 69.669  IoU=0.9086  refBlackOnly=  291199  outBlackOnly=  651258
+  R10_dilate_largest_D=5                       exact= 65.463  within2= 74.459  IoU=0.9563  refBlackOnly=  299823  outBlackOnly=  127839
+  R10_dilate_largest_D=20                      exact= 64.617  within2= 74.078  IoU=0.9563  refBlackOnly=  311493  outBlackOnly=  115765
+  R10_dilate_largest_D=60                      exact= 63.867  within2= 73.882  IoU=0.9520  refBlackOnly=  357574  outBlackOnly=  111805
+  R11_per_column_longest_run                   exact= 55.798  within2= 56.136  IoU=0.6899  refBlackOnly=  923026  outBlackOnly= 3003789
+  R12_per_column_runs>=30                      exact= 54.824  within2= 67.321  IoU=0.7803  refBlackOnly= 2007489  outBlackOnly=  147885
+  R12_per_column_runs>=100                     exact= 56.735  within2= 79.564  IoU=0.7766  refBlackOnly= 1926135  outBlackOnly=  298614
+  R12_per_column_runs>=300                     exact= 53.404  within2= 53.680  IoU=0.6789  refBlackOnly= 1333987  outBlackOnly= 2603739
+  R13_per_column_runs_touching_largest         exact= 65.466  within2= 74.462  IoU=0.9563  refBlackOnly=  299548  outBlackOnly=  127787
+  R14_per_row_longest_run                      exact= 59.659  within2= 59.889  IoU=0.7283  refBlackOnly=  326566  outBlackOnly= 3154709
+  (39s)
+
+=== 2000026091:5_SWU_Sh_L_D->11_SWU_Sh_L_D_Proc {'stage_top': False, 'largest_bbox': [0, 434, 8192, 1000]}
+  R9a_rowcut_all_comps(cut=1051,bot)           exact= 63.285  within2= 64.083  IoU=0.7899  refBlackOnly=   42308  outBlackOnly= 2545948
+  R9b_rowcut_comps>=1000(cut=1321)             exact= 63.932  within2= 67.918  IoU=0.9223  refBlackOnly=  266509  outBlackOnly=  534701
+  R10_dilate_largest_D=5                       exact= 64.951  within2= 72.512  IoU=0.9563  refBlackOnly=  281131  outBlackOnly=  152806
+  R10_dilate_largest_D=20                      exact= 64.947  within2= 72.508  IoU=0.9562  refBlackOnly=  281750  outBlackOnly=  152811
+  R10_dilate_largest_D=60                      exact= 65.385  within2= 74.675  IoU=0.9541  refBlackOnly=  319605  outBlackOnly=  135729
+  R11_per_column_longest_run                   exact= 62.374  within2= 63.472  IoU=0.8100  refBlackOnly=  241877  outBlackOnly= 1994723
+  R12_per_column_runs>=30                      exact= 55.406  within2= 60.964  IoU=0.8103  refBlackOnly= 1704292  outBlackOnly=  185703
+  R12_per_column_runs>=100                     exact= 54.500  within2= 59.002  IoU=0.8079  refBlackOnly= 1647073  outBlackOnly=  285975
+  R12_per_column_runs>=300                     exact= 60.294  within2= 61.002  IoU=0.7841  refBlackOnly=  548511  outBlackOnly= 1991569
+  R13_per_column_runs_touching_largest         exact= 64.959  within2= 72.519  IoU=0.9564  refBlackOnly=  280619  outBlackOnly=  152670
+  R14_per_row_longest_run                      exact= 61.323  within2= 61.635  IoU=0.7657  refBlackOnly=  250323  outBlackOnly= 2663312
+  (33s)
+DONE
