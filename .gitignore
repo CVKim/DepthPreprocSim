@@ -1,0 +1,39 @@
+# build outputs
+build/
+out/
+.vs/
+*.user
+*.suo
+*.pdb
+*.ilk
+*.obj
+*.exp
+
+# tool run outputs (large float dumps and per-run images)
+runs/
+uploads/
+Result/runs/
+Result/uploads/
+Result/**/*.f32
+Result/**/*.mim
+Result/**/*.npy
+*.f32
+*.npy
+
+# verification artifacts: keep the reports, drop the regenerable images/dumps
+tests/results/**/*.png
+tests/results/**/*.tif
+tests/results/**/stats.json
+tests/results/**/batch.json
+tests/results_real_exe/
+tests/__pycache__/
+tests/reference/__pycache__/
+
+# python / node
+__pycache__/
+*.pyc
+node_modules/
+
+# OS
+Thumbs.db
+desktop.ini

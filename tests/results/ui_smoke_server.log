@@ -1,0 +1,10 @@
+DepthPreprocSim UI  http://127.0.0.1:8799/
+  cli     : E:\Dev\DepthPreprocSim\build\Release\depth_sim.exe
+  ini     : D:\AIV\MODEL\[1]TireInspect_PC3_DEPLOY\alg_depth_preproc.ini
+  fovproc : D:\AIV\MODEL\[1]TireInspect_PC3_DEPLOY\FOVPROC.ini
+  roots   : H:\000. PJT\01. HankookTire\03_이미지 | D:\AIV\MODEL | E:\
+  runs    : E:\Dev\DepthPreprocSim\Result\runs\ui
+[cli] E:\Dev\DepthPreprocSim\build\Release\depth_sim.exe run --in "H:\000. PJT\01. HankookTire\03_이미지\PC3\1639390184_2000026091709423060\7_SWU_Sh_R_D.mim" --out E:\Dev\DepthPreprocSim\Result\runs\ui\20260918_144715_001 --ref "H:\000. PJT\01. HankookTire\03_이미지\PC3\1639390184_2000026091709423060\12_SWU_Sh_R_D_Proc.mim" --type INSHOULDER --patch 15,15 --overlap 0.25 --lower 5 --upper 95 --stage AUTO --exp-use-ini-pct 0 --exp-valid-pct 0 --exp-masked-median 0 --exp-null-value -1 --exp-fill-holes 0 --dump all --preview 8
+[cli] exit=0 signal= 8818 ms
+[cli] E:\Dev\DepthPreprocSim\build\Release\depth_sim.exe batch --folder "H:\000. PJT\01. HankookTire\03_이미지\PC3\2000026091715281105" --out E:\Dev\DepthPreprocSim\Result\runs\ui\batch_20260918_144725_002 --fovproc D:\AIV\MODEL\[1]TireInspect_PC3_DEPLOY\FOVPROC.ini --ini D:\AIV\MODEL\[1]TireInspect_PC3_DEPLOY\alg_depth_preproc.ini --exp-use-ini-pct 0 --exp-valid-pct 0 --exp-masked-median 0 --exp-null-value -1 --exp-fill-holes 0 --dump all --preview 8
+[cli] exit=0 signal= 131390 ms

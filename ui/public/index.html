@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DepthPreprocSim</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">DepthPreprocSim <span class="sub">alg_depth_preproc.dll 오프라인 시뮬레이터</span></div>
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="single">단일 실행</button>
+    <button class="tab-btn" data-tab="batch">배치</button>
+  </nav>
+  <div class="topbar-right">
+    <span id="dllBadge" class="badge warn hidden" title="실험 옵션이 켜져 있어 결과가 DLL 출력과 다를 수 있습니다.">실험 옵션 사용 중 — DLL 과 결과가 다를 수 있습니다</span>
+    <span id="cliStatus" class="badge muted">CLI 확인 중…</span>
+  </div>
+</header>
+
+<main>
+<!-- ============================== 단일 실행 ============================== -->
+<section id="tab-single" class="tab active">
+  <aside class="left">
+    <details class="group" open>
+      <summary>입력 파일</summary>
+      <div class="row">
+        <input id="inputPath" type="text" placeholder="…\7_SWU_Sh_R_D.mim" spellcheck="false">
+        <button id="btnBrowseInput" class="btn small" title="서버 폴더에서 파일을 선택합니다">탐색</button>
+      </div>
+      <div id="dropZone" class="dropzone" title="파일을 끌어다 놓으면 서버의 uploads 폴더로 업로드됩니다">
+        여기에 파일을 끌어다 놓으면 업로드됩니다 (.mim/.tif/.png/.bmp)
+        <div id="uploadProgress" class="progress hidden"><div class="bar"></div><span class="label"></span></div>
+      </div>
+      <div class="hint" id="inputInfo"></div>
+    </details>
+
+    <details class="group" open>
+      <summary>참조(_Proc) 파일</summary>
+      <div class="row">
+        <input id="refPath" type="text" placeholder="자동 추정 또는 직접 지정" spellcheck="false">
+        <button id="btnBrowseRef" class="btn small">탐색</button>
+        <button id="btnGuessRef" class="btn small" title="FOVPROC 매핑(예: 7 → 12_…_Proc.mim)으로 같은 폴더에서 추정합니다">추정</button>
+      </div>
+      <div class="hint" id="refHint">입력 파일 이름의 인덱스를 FOVPROC 매핑으로 변환하여 같은 폴더의 _Proc 파일을 자동으로 찾습니다.</div>
+    </details>
+
+    <details class="group" open>
+      <summary>파라미터</summary>
+      <label class="field">
+        <span>프리셋 (alg_depth_preproc.ini)</span>
+        <select id="preset"></select>
+      </label>
+      <div class="grid2">
+        <label class="field"><span>DepthPreprocType (표시용)</span>
+          <select id="pType"><option>INNERCENTER</option><option>BEAD</option><option>INSHOULDER</option></select>
+        </label>
+        <label class="field"><span>StagePosition</span>
+          <select id="stage"><option>AUTO</option><option>TOP</option><option>BOTTOM</option><option>NONE</option></select>
+        </label>
+        <label class="field"><span>지그 분리 침식 커널 (INSHOULDER, 현장 3)</span><input id="breakKernel" type="number" min="0" max="99" step="1" value="3"></label>
+        <label class="field"><span>PatchSize W (가로 px)</span><input id="patchW" type="number" min="1" step="1" value="15"></label>
+        <label class="field"><span>PatchSize H (세로 px)</span><input id="patchH" type="number" min="1" step="1" value="15"></label>
+        <label class="field"><span>Overlap (0~1 개구간)</span><input id="overlap" type="number" min="0.01" max="0.99" step="0.01" value="0.25"></label>
+        <label class="field"><span>step = int(patch×(1−overlap))</span><input id="stepInfo" type="text" readonly value="11 × 11"></label>
+      </div>
+      <div class="field"><span>ROI x1, y1, x2, y2 (x2&gt;x1, y2&gt;y1 일 때만 사용; 9999,9999,0,0 = 미사용)</span>
+        <div class="grid4">
+          <input id="roiX1" type="number" step="1" value="9999" title="x1">
+          <input id="roiY1" type="number" step="1" value="9999" title="y1">
+          <input id="roiX2" type="number" step="1" value="0" title="x2">
+          <input id="roiY2" type="number" step="1" value="0" title="y2">
+        </div>
+        <div class="hint" id="roiHint"></div>
+      </div>
+      <div class="grid2">
+        <label class="field"><span>Lower Percentage</span><input id="lower" type="number" min="0" max="100" step="0.5" value="5"></label>
+        <label class="field"><span>Upper Percentage</span><input id="upper" type="number" min="0" max="100" step="0.5" value="95"></label>
+      </div>
+      <div class="hint">DLL 은 Lower/Upper 를 읽기만 하고 5/95 를 고정 사용합니다. 아래 실험 옵션 “ini 백분위 사용” 을 켤 때만 지정값이 적용됩니다.</div>
+    </details>
+
+    <details class="group" open>
+      <summary>실험 옵션 (켜면 DLL 과 결과가 달라집니다)</summary>
+      <label class="check"><input type="checkbox" id="expUseIniPct"> ini 백분위 사용 (exp_use_ini_pct)</label>
+      <label class="check"><input type="checkbox" id="expValidPct"> null 제외 유효 픽셀로 백분위 계산 (exp_valid_pct)</label>
+      <label class="check"><input type="checkbox" id="expMaskedMedian"> 패치 median 에서 null 제외 (exp_masked_median)</label>
+      <div class="grid2">
+        <label class="field"><span>null 출력값 (−1 = DLL 처럼 0)</span><input id="expNullValue" type="number" min="-1" max="255" step="1" value="-1"></label>
+        <label class="field"><span>구멍 채움 최대 px (0 = 끄기)</span><input id="expFillHoles" type="number" min="0" step="1" value="0"></label>
+      </div>
+    </details>
+
+    <details class="group">
+      <summary>출력 옵션</summary>
+      <div class="grid2">
+        <label class="field"><span>덤프</span>
+          <select id="dumpMode"><option value="all">all (중간 단계 + f32 덤프)</option><option value="min">min (result + stats 만)</option></select>
+        </label>
+        <label class="field"><span>미리보기 축소 배율</span><input id="previewN" type="number" min="1" step="1" value="8"></label>
+        <label class="field"><span>화소 크기 X (um, 선택)</span><input id="pxX" type="number" min="0" step="1" placeholder="300"></label>
+        <label class="field"><span>화소 크기 Y (um, 선택)</span><input id="pxY" type="number" min="0" step="1" placeholder="100"></label>
+      </div>
+      <div class="hint">min 모드에서는 중간 레이어와 픽셀 인스펙터(raw/basis/diff)를 사용할 수 없습니다.</div>
+    </details>
+
+    <div class="actions">
+      <button id="btnRun" class="btn primary">실행</button>
+      <button id="btnPin" class="btn" title="현재 결과를 A 로 고정하고 다음 실행을 B 로 받습니다">A/B 고정</button>
+      <button id="btnToggleAB" class="btn" disabled title="A 와 B 표시를 전환합니다 (Space)">A/B 전환</button>
+    </div>
+    <div id="runStatus" class="status"></div>
+
+    <details class="group">
+      <summary>이전 실행 불러오기</summary>
+      <div class="row">
+        <select id="prevRuns"></select>
+        <button id="btnLoadRun" class="btn small">불러오기</button>
+        <button id="btnRefreshRuns" class="btn small" title="목록 새로 고침">↻</button>
+      </div>
+      <div class="hint" id="runsDirHint"></div>
+    </details>
+  </aside>
+
+  <div class="right">
+    <div class="viewbar">
+      <div id="layerBar" class="layers"></div>
+      <div class="viewctl">
+        <label>열 <select id="cols"><option value="1">1</option><option value="2">2</option><option value="3">3</option></select></label>
+        <button id="btnFit" class="btn small" title="모든 패널의 보기를 초기화합니다 (더블클릭과 동일)">보기 초기화</button>
+        <span id="abIndicator" class="badge muted hidden"></span>
+        <span id="runInfo" class="runinfo"></span>
+      </div>
+    </div>
+    <div id="panelGrid" class="panel-grid" style="--cols:1"></div>
+    <div class="hint center">휠: 커서 기준 확대/축소 · 드래그: 이동 · 더블클릭: 초기화 · 모든 패널이 동기화됩니다</div>
+
+    <div id="inspector" class="inspector">
+      <span class="k">위치</span><span id="insPos" class="v">–</span>
+      <span class="k">raw z</span><span id="insRaw" class="v">–</span>
+      <span class="k">basis</span><span id="insBasis" class="v">–</span>
+      <span class="k">diff</span><span id="insDiff" class="v">–</span>
+      <span class="k">result</span><span id="insResult" class="v">–</span>
+      <span class="k">ref</span><span id="insRef" class="v">–</span>
+    </div>
+
+    <div class="bottom-grid">
+      <div class="card">
+        <h3>통계 <span id="statsWarn" class="badge warn hidden">dll_identical = false</span></h3>
+        <div id="statsTable" class="stats"></div>
+      </div>
+      <div class="card">
+        <h3>diff 히스토그램 <label class="inline"><input type="checkbox" id="histLog" checked> 로그 스케일</label></h3>
+        <canvas id="histCanvas" height="200"></canvas>
+        <div class="hint">파랑 = low(5%), 주황 = high(95%), 회색 점선 = 0. 유효 픽셀만 집계합니다.</div>
+        <h3>행 구간별 검정 / 흰색 비율 (유효 행 20 구간)</h3>
+        <canvas id="rowBinCanvas" height="200"></canvas>
+        <div class="hint">검정(0) = null 또는 하위 클립, 흰색(255) = 상위 클립. 각 구간의 유효 픽셀 대비 비율입니다.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================== 배치 ============================== -->
+<section id="tab-batch" class="tab">
+  <div class="batch-form">
+    <label class="field grow"><span>타이어 폴더 (…\PC3\&lt;타이어 ID&gt;)</span>
+      <div class="row"><input id="batchFolder" type="text" spellcheck="false" placeholder="H:\000. PJT\01. HankookTire\03_이미지\PC3\2000026091715281105"><button id="btnBrowseBatch" class="btn small">탐색</button></div>
+    </label>
+    <label class="field grow"><span>FOVPROC.ini (RequireImgIdx → ResultImgIdx / ParamIdx)</span>
+      <div class="row"><input id="batchFovproc" type="text" spellcheck="false"><button id="btnBrowseFovproc" class="btn small">탐색</button></div>
+    </label>
+    <label class="check"><input type="checkbox" id="batchOverride"> 좌측 파라미터(패치/오버랩/스테이지/ROI)를 모든 이미지에 강제 적용 (끄면 이미지별 CAL 프리셋 사용)</label>
+    <div class="actions">
+      <button id="btnBatchRun" class="btn primary">배치 실행</button>
+      <span id="batchStatus" class="status"></span>
+    </div>
+  </div>
+  <div class="hint">폴더의 *_D.mim(_Proc 제외)을 FOVPROC 매핑으로 처리하고, 같은 폴더의 _Proc 참조가 있으면 자동 비교합니다. 실험 옵션·덤프 설정은 좌측 값을 따릅니다. 행을 클릭하면 단일 실행 탭에서 열립니다.</div>
+  <div id="batchTable" class="batch-table"></div>
+</section>
+</main>
+
+<!-- ============================== 폴더 탐색 모달 ============================== -->
+<div id="browserModal" class="modal hidden">
+  <div class="modal-box">
+    <div class="modal-head">
+      <span id="browserTitle">파일 선택</span>
+      <button id="btnBrowserClose" class="btn small">닫기</button>
+    </div>
+    <div class="row">
+      <button id="btnBrowserUp" class="btn small" title="상위 폴더">↑</button>
+      <input id="browserPath" type="text" spellcheck="false" placeholder="경로를 입력하고 Enter">
+      <button id="btnBrowserGo" class="btn small">이동</button>
+      <button id="btnBrowserSelectDir" class="btn small primary hidden">이 폴더 선택</button>
+    </div>
+    <div id="browserRoots" class="roots"></div>
+    <div id="browserList" class="list"></div>
+  </div>
+</div>
+
+<script src="/app.js"></script>
+</body>
+</html>
