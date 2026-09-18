@@ -110,6 +110,7 @@ function gatherParams() {
     exp: {
       use_ini_pct: $('expUseIniPct').checked, valid_pct: $('expValidPct').checked, masked_median: $('expMaskedMedian').checked,
       null_value: int('expNullValue', -1), fill_holes: int('expFillHoles', 0),
+      stage_restore: $('expStageRestore').checked, abs_mm: num('expAbsMm', 0),
     },
     dump: $('dumpMode').value, preview: int('previewN', 8),
     px_x: $('pxX').value === '' ? null : num('pxX', null), px_y: $('pxY').value === '' ? null : num('pxY', null),

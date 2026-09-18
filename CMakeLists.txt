@@ -30,6 +30,7 @@ endif()
 
 add_library(depth_core STATIC
   core/DepthPreprocCore.cpp
+  core/DepthPreprocV2.cpp
   core/MimReader.cpp
   core/IniReader.cpp
   core/Stats.cpp)

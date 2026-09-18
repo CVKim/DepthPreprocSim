@@ -96,7 +96,13 @@ static fs::path ResolveOutDir(const std::wstring& out)
 static const std::set<std::wstring> kKnownOptions = {
     L"--in", L"--out", L"--ref", L"--folder", L"--fovproc", L"--ini", L"--cal", L"--type", L"--patch", L"--overlap",
     L"--lower", L"--upper", L"--stage", L"--roi", L"--exp-use-ini-pct", L"--exp-valid-pct", L"--exp-masked-median",
-    L"--exp-null-value", L"--exp-fill-holes", L"--dump", L"--preview", L"--px-x", L"--px-y", L"--break-kernel" };
+    L"--exp-null-value", L"--exp-fill-holes", L"--dump", L"--preview", L"--px-x", L"--px-y", L"--break-kernel",
+    L"--exp-stage-restore", L"--exp-abs-mm",
+    L"--algo", L"--v2-range-mm", L"--v2-edge", L"--v2-slope", L"--v2-fill", L"--v2-env-median",
+    L"--v2-small-hole", L"--v2-rho-thr", L"--v2-rho-kill", L"--v2-out-mm", L"--v2-feather", L"--v2-taper",
+    L"--v2-mode", L"--v2-norm", L"--v2-spike-mm",
+    L"--v2-rm-win", L"--v2-rm-step", L"--v2-zone-w", L"--v2-zone-h", L"--v2-zone-thr", L"--v2-zone-margin",
+    L"--v2-zone-out-mm", L"--v2-zone-out2-mm", L"--v2-zone-norm", L"--v2-zone-seed-mm", L"--v2-zone-grow-mm" };
 
 struct Options
 {
@@ -243,6 +249,90 @@ static void ApplyOverrides(Resolved& r, const Options& o)
         int v = ParseIntStrict(o.Get(L"--exp-fill-holes"), "--exp-fill-holes");
         if (v < 0) throw ExitError{ 2, "--exp-fill-holes must be >= 0" };
         r.p.exp.fill_holes = v;
+    }
+    if (o.Has(L"--algo"))
+    {
+        std::wstring a = Upper(o.Get(L"--algo"));
+        if (a != L"SITE" && a != L"V2") throw ExitError{ 2, "--algo must be site|v2" };
+        r.p.exp.v2.on = (a == L"V2");
+    }
+    if (o.Has(L"--v2-range-mm"))
+    {
+        double v = ParseDoubleStrict(o.Get(L"--v2-range-mm"), "--v2-range-mm");
+        if (v <= 0 || v > 50) throw ExitError{ 2, "--v2-range-mm must be within (0,50]" };
+        r.p.exp.v2.range_mm = v;
+    }
+    if (o.Has(L"--v2-edge"))
+    {
+        int v = ParseIntStrict(o.Get(L"--v2-edge"), "--v2-edge");
+        if (v < 0 || v > 20) throw ExitError{ 2, "--v2-edge must be 0..20" };
+        r.p.exp.v2.edge = v;
+    }
+    if (o.Has(L"--v2-slope")) r.p.exp.v2.slope = ParseFlag01(o.Get(L"--v2-slope"), "--v2-slope");
+    if (o.Has(L"--v2-fill")) r.p.exp.v2.fill = ParseFlag01(o.Get(L"--v2-fill"), "--v2-fill");
+    if (o.Has(L"--v2-env-median"))
+    {
+        int v = ParseIntStrict(o.Get(L"--v2-env-median"), "--v2-env-median");
+        if (v < 1 || v > 2001) throw ExitError{ 2, "--v2-env-median must be 1..2001" };
+        r.p.exp.v2.env_median = v;
+    }
+    auto v2d = [&](const wchar_t* name, const char* nm, double lo, double hi, double& dst)
+    {
+        if (!o.Has(name)) return;
+        double v = ParseDoubleStrict(o.Get(name), nm);
+        if (v < lo || v > hi) throw ExitError{ 2, std::string(nm) + " out of range" };
+        dst = v;
+    };
+    if (o.Has(L"--v2-mode"))
+    {
+        std::wstring m = Upper(o.Get(L"--v2-mode"));
+        if (m != L"NEUTRAL" && m != L"RESTORE" && m != L"RESTORE2") throw ExitError{ 2, "--v2-mode must be neutral|restore|restore2" };
+        r.p.exp.v2.mode = (m == L"RESTORE2") ? 2 : (m == L"RESTORE") ? 1 : 0;
+    }
+    if (o.Has(L"--v2-norm"))
+    {
+        std::wstring m = Upper(o.Get(L"--v2-norm"));
+        if (m != L"FIXED" && m != L"PCT") throw ExitError{ 2, "--v2-norm must be fixed|pct" };
+        r.p.exp.v2.pct_norm = (m == L"PCT");
+    }
+    v2d(L"--v2-spike-mm", "--v2-spike-mm", 0, 50, r.p.exp.v2.spike_mm);
+    v2d(L"--v2-zone-thr", "--v2-zone-thr", 0, 1, r.p.exp.v2.zone_thr);
+    v2d(L"--v2-zone-out-mm", "--v2-zone-out-mm", 0.05, 50, r.p.exp.v2.zout_mm);
+    v2d(L"--v2-zone-out2-mm", "--v2-zone-out2-mm", 0, 50, r.p.exp.v2.zout2_mm);
+    v2d(L"--v2-zone-seed-mm", "--v2-zone-seed-mm", 0.01, 50, r.p.exp.v2.zseed_mm);
+    v2d(L"--v2-zone-grow-mm", "--v2-zone-grow-mm", 0, 50, r.p.exp.v2.zgrow_mm);
+    auto v2i = [&](const wchar_t* name, const char* nm, int lo, int hi, int& dst)
+    {
+        if (!o.Has(name)) return;
+        int v = ParseIntStrict(o.Get(name), nm);
+        if (v < lo || v > hi) throw ExitError{ 2, std::string(nm) + " out of range" };
+        dst = v;
+    };
+    v2i(L"--v2-rm-win", "--v2-rm-win", 9, 4001, r.p.exp.v2.rm_win);
+    v2i(L"--v2-rm-step", "--v2-rm-step", 1, 256, r.p.exp.v2.rm_step);
+    v2i(L"--v2-zone-w", "--v2-zone-w", 3, 4001, r.p.exp.v2.zone_w);
+    v2i(L"--v2-zone-h", "--v2-zone-h", 3, 1001, r.p.exp.v2.zone_h);
+    v2i(L"--v2-zone-margin", "--v2-zone-margin", 0, 200, r.p.exp.v2.zone_margin);
+    if (o.Has(L"--v2-zone-norm")) r.p.exp.v2.zone_norm = ParseFlag01(o.Get(L"--v2-zone-norm"), "--v2-zone-norm");
+    v2d(L"--v2-rho-thr", "--v2-rho-thr", 0, 1, r.p.exp.v2.rho_thr);
+    v2d(L"--v2-rho-kill", "--v2-rho-kill", 0, 1, r.p.exp.v2.rho_kill);
+    v2d(L"--v2-out-mm", "--v2-out-mm", 0, 50, r.p.exp.v2.out_mm);
+    v2d(L"--v2-feather", "--v2-feather", 0, 50, r.p.exp.v2.feather);
+    v2d(L"--v2-taper", "--v2-taper", 0, 200, r.p.exp.v2.taper);
+    if (o.Has(L"--v2-small-hole"))
+    {
+        int v = ParseIntStrict(o.Get(L"--v2-small-hole"), "--v2-small-hole");
+        if (v < 0) throw ExitError{ 2, "--v2-small-hole must be >= 0" };
+        r.p.exp.v2.small_hole = v;
+    }
+    if (o.Has(L"--px-x")) r.p.exp.v2.px_x_mm = ParseDoubleStrict(o.Get(L"--px-x"), "--px-x") / 1000.0;
+    if (o.Has(L"--px-y")) r.p.exp.v2.px_y_mm = ParseDoubleStrict(o.Get(L"--px-y"), "--px-y") / 1000.0;
+    if (o.Has(L"--exp-stage-restore")) r.p.exp.stage_restore = ParseFlag01(o.Get(L"--exp-stage-restore"), "--exp-stage-restore");
+    if (o.Has(L"--exp-abs-mm"))
+    {
+        double v = ParseDoubleStrict(o.Get(L"--exp-abs-mm"), "--exp-abs-mm");
+        if (v < 0 || v > 50) throw ExitError{ 2, "--exp-abs-mm must be within [0,50] (0 = off)" };
+        r.p.exp.abs_mm = v;
     }
     if (o.Has(L"--break-kernel"))
     {
@@ -495,6 +585,12 @@ static RunOutcome RunOne(const RunRequest& req)
 
     WriteImage(d / L"result.png", res.result8u);
     WriteImage(d / L"preview_result.png", Preview(res.result8u, n));
+    if (!res.zone_mask.empty())
+    {
+        WriteImage(d / L"zone_mask.png", res.zone_mask);
+        WriteImage(d / L"rejected_mask.png", res.rejected_mask);
+        WriteImage(d / L"hole_mask.png", res.hole_mask);
+    }
     if (req.settings.dumpAll)
     {
         cv::Mat result32f;
@@ -525,6 +621,11 @@ static RunOutcome RunOne(const RunRequest& req)
         WriteF32Raw(d / L"raw.f32", raw);
         WriteF32Raw(d / L"basis.f32", res.basis);
         WriteF32Raw(d / L"diff.f32", res.diff_f32);
+        if (!res.surface.empty())
+        {
+            WriteF32Raw(d / L"surface.f32", res.surface);      // restore2: robust surface R (mm)
+            WriteF32Raw(d / L"restored.f32", res.scaled);      // restore2: depth after rejection + refill (mm)
+        }
     }
     WriteText(d / L"stats.json", json);
 
@@ -717,7 +818,15 @@ static void Usage()
         "options: --ini <ini> --cal <N> --type INNERCENTER|BEAD|INSHOULDER (selects the stage-removal step like the site DLL)\n"
         "         --patch W,H --overlap F --lower P --upper P --stage AUTO|TOP|BOTTOM|NONE --break-kernel N (site: 3)\n"
         "         --roi x1,y1,x2,y2 --exp-use-ini-pct 0|1 --exp-valid-pct 0|1 --exp-masked-median 0|1 --exp-null-value N\n"
-        "         --exp-fill-holes <maxpx> --dump min|all --preview N --px-x um --px-y um\n";
+        "         --exp-fill-holes <maxpx> --exp-stage-restore 0|1 --exp-abs-mm F --dump min|all --preview N --px-x um --px-y um\n"
+        "         --algo site|v2 (v2 = band-aware null fill + slope-compensated fixed scale; experimental)\n"
+        "         --v2-range-mm F (0.4) --v2-edge N (2) --v2-slope 0|1 (1) --v2-fill 0|1 (1) --v2-small-hole N (60) --v2-env-median N (101)\n"
+        "         --v2-rho-thr F (0.03) --v2-rho-kill F (0.25) --v2-out-mm F (0.3) --v2-feather F (1.5) --v2-taper F (0)\n"
+        "         --v2-mode neutral|restore|restore2 (restore = keep measured pixels, interpolate nulls; restore2 = restore + dropout zones:\n"
+        "                   wrong-valued clusters rejected against a running-median surface, holes refilled in the residual domain)\n"
+        "         --v2-norm fixed|pct --v2-spike-mm F (1.0)\n"
+        "         restore2: --v2-rm-win N (301) --v2-rm-step N (16) --v2-zone-w N (401) --v2-zone-h N (21) --v2-zone-thr F (0.04)\n"
+        "                   --v2-zone-margin N (30) --v2-zone-out-mm F (1.2) --v2-zone-out2-mm F (0.5) --v2-zone-norm 0|1 (1) --v2-zone-seed-mm F (0.6) --v2-zone-grow-mm F (0.35, 0 = plain threshold)\n";
     fputs(u, stderr);
 }
 

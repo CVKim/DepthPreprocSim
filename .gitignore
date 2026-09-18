@@ -14,6 +14,7 @@ runs/
 uploads/
 Result/runs/
 Result/uploads/
+Result/experiments_*/runs/
 Result/**/*.f32
 Result/**/*.mim
 Result/**/*.npy

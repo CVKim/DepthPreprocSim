@@ -293,6 +293,8 @@ function normalizeParams(raw) {
     masked_median: !!flag(e.masked_median, p.exp_masked_median),
     null_value: toInt(flag(e.null_value, p.exp_null_value), -1),
     fill_holes: Math.max(0, toInt(flag(e.fill_holes, p.exp_fill_holes), 0)),
+    stage_restore: !!flag(e.stage_restore, p.exp_stage_restore),
+    abs_mm: Math.min(50, Math.max(0, toNum(flag(e.abs_mm, p.exp_abs_mm), 0))),
   };
   const stage = String(p.stage || 'AUTO').toUpperCase();
   const type = p.type ? String(p.type).toUpperCase() : null;
@@ -331,6 +333,8 @@ function paramArgs(p, includeCore) {
   a.push('--exp-masked-median', p.exp.masked_median ? '1' : '0');
   a.push('--exp-null-value', String(p.exp.null_value));
   a.push('--exp-fill-holes', String(p.exp.fill_holes));
+  a.push('--exp-stage-restore', p.exp.stage_restore ? '1' : '0');
+  a.push('--exp-abs-mm', String(p.exp.abs_mm));
   a.push('--dump', p.dump, '--preview', String(p.preview));
   if (p.px_x !== null && p.px_y !== null) a.push('--px-x', String(p.px_x), '--px-y', String(p.px_y));
   return a;

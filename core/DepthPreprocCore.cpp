@@ -445,7 +445,26 @@ namespace
             low = DepthProcessor::computePercentile(diff_float, lower);
             high = DepthProcessor::computePercentile(diff_float, upper);
         }
-        cv::Mat anomaly = ClipNormalize(diff_float, low, high, 1000, im);
+        cv::Mat anomaly;
+        if (p.exp.abs_mm > 0)
+        {
+            // Fixed physical scale: 1 scaled unit = (zmax - zmin) / 65536 mm. Map +-abs_mm to 1..255 with 128 = basis plane;
+            // 0 stays reserved for null so holes and deep valleys are distinguishable.
+            double zmn = 0, zmx = 0;
+            ValidMinMax(data, null_mask, zmn, zmx);
+            const double unit_mm = (zmx > zmn) ? (zmx - zmn) / 65536.0 : 0.0;
+            const double lim = (unit_mm > 0) ? p.exp.abs_mm / unit_mm : 1.0;
+            cv::Mat clipped = diff_float.clone();
+            clipped.setTo(-lim, clipped < -lim);
+            clipped.setTo(lim, clipped > lim);
+            clipped.convertTo(anomaly, CV_8U, 127.0 / lim, 128.0);
+            anomaly.setTo(1, anomaly < 1);
+            im.low = -lim; im.high = lim; im.clipped = clipped; im.nmin = -lim; im.nmax = lim;
+        }
+        else
+        {
+            anomaly = ClipNormalize(diff_float, low, high, 1000, im);
+        }
         anomaly.setTo(0, null_mask);
         if (p.exp.null_value >= 0)
             anomaly.setTo(std::min(p.exp.null_value, 255), null_mask);
@@ -511,6 +530,51 @@ namespace SimPipeline
             r.roi_rect = cv::Rect(0, 0, work.cols, work.rows);
         }
 
+        // --- experimental algorithm v2 replaces the whole pipeline (never DLL-identical) ---
+        if (p.exp.v2.on)
+        {
+            auto tv = Clock::now();
+            DepthProcessorV2::Debug dbg;
+            cv::Mat out8 = DepthProcessorV2::Process(view, p, dbg);
+            r.timing.clip_normalize = MsSince(tv);
+            r.timing.total = r.timing.clip_normalize;
+            cv::Mat finalImage = out8;
+            if (r.use_roi)
+            {
+                if (roi != r.roi_rect)
+                    throw std::runtime_error("ROI exceeds the image; the DLL fails at result8u.copyTo(finalImage(roi))");
+                finalImage = cv::Mat::zeros(r.original_size, CV_8UC1);
+                out8.copyTo(finalImage(roi));
+            }
+            r.result8u = finalImage;
+            compare(src32f, -999, r.null_mask_before, cv::CMP_EQ);
+            r.src_after_stage = work;
+            cv::Mat outside = ~dbg.band;
+            r.null_mask_after = PlaceFull(outside, r.original_size, r.roi_rect, r.use_roi, cv::Scalar::all(255));
+            r.stage_removed_mask = PlaceFull(dbg.stage_removed, r.original_size, r.roi_rect, r.use_roi);
+            r.band_mask = PlaceFull(dbg.band, r.original_size, r.roi_rect, r.use_roi);
+            r.hole_mask = PlaceFull(dbg.holes, r.original_size, r.roi_rect, r.use_roi);
+            if (!dbg.zone.empty())
+            {
+                r.zone_mask = PlaceFull(dbg.zone, r.original_size, r.roi_rect, r.use_roi);
+                r.rejected_mask = PlaceFull(dbg.rejected, r.original_size, r.roi_rect, r.use_roi);
+                r.surface = PlaceFull(dbg.surface, r.original_size, r.roi_rect, r.use_roi);
+                r.v2_zone_pct = dbg.zone_pct; r.v2_rejected_pct = dbg.rejected_pct; r.v2_filled_pct = dbg.filled_pct;
+            }
+            r.scaled = PlaceFull(dbg.zf, r.original_size, r.roi_rect, r.use_roi);
+            r.basis = PlaceFull(dbg.basis, r.original_size, r.roi_rect, r.use_roi);
+            r.diff_f32 = PlaceFull(dbg.rn_um, r.original_size, r.roi_rect, r.use_roi);
+            r.clipped = PlaceFull(dbg.clipped_um, r.original_size, r.roi_rect, r.use_roi);
+            r.clip_low = dbg.low_mm * 1000.0;
+            r.clip_high = dbg.high_mm * 1000.0;
+            r.norm_min = r.clip_low; r.norm_max = r.clip_high;
+            r.z_min = dbg.z_min; r.z_max = dbg.z_max;
+            r.unit_mm_override = 0.001;          // diff / clip are reported in um
+            r.capture_identical = true;
+            r.dll_identical = false;
+            return;
+        }
+
         cv::Mat nullBefore;
         compare(view, -999, nullBefore, cv::CMP_EQ);
 
@@ -523,7 +587,10 @@ namespace SimPipeline
         {
         case TYPE_INNERCENTER: break;
         case TYPE_BEAD: DepthProcessor::removeStageFromRawDataBead(view, p.stage); break;
-        default: DepthProcessor::removeStageFromRawData(view, p.stage, p.break_kernel); break;
+        default:
+            if (p.exp.stage_restore) DepthProcessorExp::removeStageRestored(view, p.stage, p.break_kernel);
+            else DepthProcessor::removeStageFromRawData(view, p.stage, p.break_kernel);
+            break;
         }
         r.timing.remove_stage = MsSince(t0);
 
@@ -674,6 +741,51 @@ namespace DepthProcessorExp
         cv::Mat basis_plane;
         cv::resize(sampled, basis_plane, cv::Size(w, h), 0, 0, cv::INTER_LINEAR);
         return basis_plane;
+    }
+
+    void removeStageRestored(cv::Mat& src32f, int stagePosMode, int breakKernel)
+    {
+        if (src32f.empty() || stagePosMode == 3) return;
+        const int h = src32f.rows, w = src32f.cols;
+        cv::Mat mask = cv::Mat::zeros(h, w, CV_8UC1);
+        for (int r = 0; r < h; ++r)
+        {
+            const float* ptr = src32f.ptr<float>(r);
+            uchar* mptr = mask.ptr<uchar>(r);
+            for (int c = 0; c < w; ++c)
+                if (ptr[c] > -900.0f) mptr[c] = 1;
+        }
+        cv::Mat labelMask = mask;
+        cv::Mat kernel;
+        if (breakKernel >= 3)
+        {
+            kernel = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(breakKernel, breakKernel));
+            labelMask = cv::Mat();                 // own buffer: the only difference from the site code
+            cv::erode(mask, labelMask, kernel);
+        }
+        cv::Mat labels, stats, centroids;
+        const int num_labels = cv::connectedComponentsWithStats(labelMask, labels, stats, centroids, 8, CV_32S);
+        if (num_labels <= 1) return;
+        int max_area = 0, best_label = -1;
+        for (int i = 1; i < num_labels; ++i)
+        {
+            const int area = stats.at<int>(i, cv::CC_STAT_AREA);
+            if (area > max_area) { max_area = area; best_label = i; }
+        }
+        if (best_label == -1) return;
+        cv::Mat keep = (labels == best_label);
+        if (breakKernel >= 3)
+        {
+            cv::dilate(keep, keep, kernel);
+            cv::bitwise_and(keep, mask, keep);     // mask is intact here -> border really restored
+        }
+        for (int r = 0; r < h; ++r)
+        {
+            float* ptr = src32f.ptr<float>(r);
+            const uchar* kptr = keep.ptr<uchar>(r);
+            for (int c = 0; c < w; ++c)
+                if (kptr[c] == 0) ptr[c] = -999.0f;
+        }
     }
 
     void fillSmallHoles(cv::Mat& src32f, int maxArea)

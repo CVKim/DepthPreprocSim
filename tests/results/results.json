@@ -1,6 +1,6 @@
 {
  "meta": {
-  "started": "2026-09-18 14:45:22",
+  "started": "2026-09-18 18:39:11",
   "exe": "E:\\Dev\\DepthPreprocSim\\build\\Release\\depth_sim.exe",
   "exe_version": "depth_sim 1.1.0 (alg_depth_preproc site PC3 2026-07-08 rc 1.0.2.0.38cf930_HT, OpenCV 4.4.0)",
   "cases_file": "E:\\Dev\\DepthPreprocSim\\tests\\cases.json",
@@ -15,7 +15,7 @@
   "python": "3.12.4",
   "numpy": "1.26.4",
   "cv2": "4.10.0",
-  "elapsed_s": 112.5,
+  "elapsed_s": 108.0,
   "overall": "PASS"
  },
  "cases": {
@@ -33,9 +33,9 @@
      "issues": [],
      "cmd": "E:\\Dev\\DepthPreprocSim\\build\\Release\\depth_sim.exe run --in \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\1639390184_2000026091709423060\\5_SWU_Sh_L_D.mim\" --out E:\\Dev\\DepthPreprocSim\\tests\\results\\T1\\5_11 --ref \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\1639390184_2000026091709423060\\11_SWU_Sh_L_D_Proc.mim\" --ini D:\\AIV\\MODEL\\[1]TireInspect_PC3_DEPLOY\\alg_depth_preproc.ini --cal 3 --dump min",
      "rc": 0,
-     "elapsed_s": 3.39,
+     "elapsed_s": 3.23,
      "stderr_tail": "",
-     "exe_total_ms": 1382.3698,
+     "exe_total_ms": 1399.044,
      "exe_ref": {
       "path": "H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\1639390184_2000026091709423060\\11_SWU_Sh_L_D_Proc.mim",
       "exact_pct": 100,
@@ -97,9 +97,9 @@
      "issues": [],
      "cmd": "E:\\Dev\\DepthPreprocSim\\build\\Release\\depth_sim.exe run --in \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\1639390184_2000026091709423060\\7_SWU_Sh_R_D.mim\" --out E:\\Dev\\DepthPreprocSim\\tests\\results\\T1\\7_12 --ref \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\1639390184_2000026091709423060\\12_SWU_Sh_R_D_Proc.mim\" --ini D:\\AIV\\MODEL\\[1]TireInspect_PC3_DEPLOY\\alg_depth_preproc.ini --cal 3 --dump min",
      "rc": 0,
-     "elapsed_s": 3.18,
+     "elapsed_s": 3.11,
      "stderr_tail": "",
-     "exe_total_ms": 1316.9989,
+     "exe_total_ms": 1332.9722,
      "exe_ref": {
       "path": "H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\1639390184_2000026091709423060\\12_SWU_Sh_R_D_Proc.mim",
       "exact_pct": 100,
@@ -161,9 +161,9 @@
      "issues": [],
      "cmd": "E:\\Dev\\DepthPreprocSim\\build\\Release\\depth_sim.exe run --in \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\1639390184_2000026091709423060\\17_SWD_Sh_L_D.mim\" --out E:\\Dev\\DepthPreprocSim\\tests\\results\\T1\\17_23 --ref \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\1639390184_2000026091709423060\\23_SWD_Sh_L_D_Proc.mim\" --ini D:\\AIV\\MODEL\\[1]TireInspect_PC3_DEPLOY\\alg_depth_preproc.ini --cal 3 --dump min",
      "rc": 0,
-     "elapsed_s": 3.42,
+     "elapsed_s": 3.4,
      "stderr_tail": "",
-     "exe_total_ms": 1407.8229,
+     "exe_total_ms": 1473.0819,
      "exe_ref": {
       "path": "H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\1639390184_2000026091709423060\\23_SWD_Sh_L_D_Proc.mim",
       "exact_pct": 100,
@@ -225,9 +225,9 @@
      "issues": [],
      "cmd": "E:\\Dev\\DepthPreprocSim\\build\\Release\\depth_sim.exe run --in \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\1639390184_2000026091709423060\\19_SWD_Sh_R_D.mim\" --out E:\\Dev\\DepthPreprocSim\\tests\\results\\T1\\19_24 --ref \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\1639390184_2000026091709423060\\24_SWD_Sh_R_D_Proc.mim\" --ini D:\\AIV\\MODEL\\[1]TireInspect_PC3_DEPLOY\\alg_depth_preproc.ini --cal 3 --dump min",
      "rc": 0,
-     "elapsed_s": 3.12,
+     "elapsed_s": 3.13,
      "stderr_tail": "",
-     "exe_total_ms": 1296.1542,
+     "exe_total_ms": 1359.8415,
      "exe_ref": {
       "path": "H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\1639390184_2000026091709423060\\24_SWD_Sh_R_D_Proc.mim",
       "exact_pct": 100,
@@ -289,9 +289,9 @@
      "issues": [],
      "cmd": "E:\\Dev\\DepthPreprocSim\\build\\Release\\depth_sim.exe run --in \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\1639390184_2000026091709423060\\3_SWU_Bead_D.mim\" --out E:\\Dev\\DepthPreprocSim\\tests\\results\\T1\\3_10 --ref \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\1639390184_2000026091709423060\\10_SWU_Bead_D_Proc.mim\" --ini D:\\AIV\\MODEL\\[1]TireInspect_PC3_DEPLOY\\alg_depth_preproc.ini --cal 2 --dump min",
      "rc": 0,
-     "elapsed_s": 1.39,
+     "elapsed_s": 1.53,
      "stderr_tail": "",
-     "exe_total_ms": 583.5678,
+     "exe_total_ms": 631.5478,
      "exe_ref": {
       "path": "H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\1639390184_2000026091709423060\\10_SWU_Bead_D_Proc.mim",
       "exact_pct": 100,
@@ -355,7 +355,7 @@
      "rc": 0,
      "elapsed_s": 6.93,
      "stderr_tail": "",
-     "exe_total_ms": 2991.739,
+     "exe_total_ms": 3019.3748,
      "exe_ref": {
       "path": "H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\1639390184_2000026091709423060\\9_SWU_Cen_D_Proc.mim",
       "exact_pct": 100,
@@ -408,7 +408,7 @@
      "status": "PASS"
     }
    ],
-   "case_elapsed_s": 23.9
+   "case_elapsed_s": 23.7
   },
   "T2": {
    "desc": "same shoulder inputs with --stage NONE: exact_pct must drop >= 20 pp vs T1 (removeStage sanity)",
@@ -424,9 +424,9 @@
      "issues": [],
      "cmd": "E:\\Dev\\DepthPreprocSim\\build\\Release\\depth_sim.exe run --in \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\1639390184_2000026091709423060\\5_SWU_Sh_L_D.mim\" --out E:\\Dev\\DepthPreprocSim\\tests\\results\\T2\\5_11 --ref \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\1639390184_2000026091709423060\\11_SWU_Sh_L_D_Proc.mim\" --ini D:\\AIV\\MODEL\\[1]TireInspect_PC3_DEPLOY\\alg_depth_preproc.ini --cal 3 --dump min --stage NONE",
      "rc": 0,
-     "elapsed_s": 3.45,
+     "elapsed_s": 3.42,
      "stderr_tail": "",
-     "exe_total_ms": 1391.4142,
+     "exe_total_ms": 1440.6271,
      "exe_ref": {
       "path": "H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\1639390184_2000026091709423060\\11_SWU_Sh_L_D_Proc.mim",
       "exact_pct": 50.590990204172,
@@ -494,9 +494,9 @@
      "issues": [],
      "cmd": "E:\\Dev\\DepthPreprocSim\\build\\Release\\depth_sim.exe run --in \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\1639390184_2000026091709423060\\7_SWU_Sh_R_D.mim\" --out E:\\Dev\\DepthPreprocSim\\tests\\results\\T2\\7_12 --ref \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\1639390184_2000026091709423060\\12_SWU_Sh_R_D_Proc.mim\" --ini D:\\AIV\\MODEL\\[1]TireInspect_PC3_DEPLOY\\alg_depth_preproc.ini --cal 3 --dump min --stage NONE",
      "rc": 0,
-     "elapsed_s": 3.6,
+     "elapsed_s": 3.54,
      "stderr_tail": "",
-     "exe_total_ms": 1488.4986,
+     "exe_total_ms": 1503.5424,
      "exe_ref": {
       "path": "H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\1639390184_2000026091709423060\\12_SWU_Sh_R_D_Proc.mim",
       "exact_pct": 43.5902703668653,
@@ -564,9 +564,9 @@
      "issues": [],
      "cmd": "E:\\Dev\\DepthPreprocSim\\build\\Release\\depth_sim.exe run --in \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\1639390184_2000026091709423060\\17_SWD_Sh_L_D.mim\" --out E:\\Dev\\DepthPreprocSim\\tests\\results\\T2\\17_23 --ref \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\1639390184_2000026091709423060\\23_SWD_Sh_L_D_Proc.mim\" --ini D:\\AIV\\MODEL\\[1]TireInspect_PC3_DEPLOY\\alg_depth_preproc.ini --cal 3 --dump min --stage NONE",
      "rc": 0,
-     "elapsed_s": 3.49,
+     "elapsed_s": 3.4,
      "stderr_tail": "",
-     "exe_total_ms": 1405.3096,
+     "exe_total_ms": 1436.5639,
      "exe_ref": {
       "path": "H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\1639390184_2000026091709423060\\23_SWD_Sh_L_D_Proc.mim",
       "exact_pct": 50.3063021001128,
@@ -634,9 +634,9 @@
      "issues": [],
      "cmd": "E:\\Dev\\DepthPreprocSim\\build\\Release\\depth_sim.exe run --in \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\1639390184_2000026091709423060\\19_SWD_Sh_R_D.mim\" --out E:\\Dev\\DepthPreprocSim\\tests\\results\\T2\\19_24 --ref \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\1639390184_2000026091709423060\\24_SWD_Sh_R_D_Proc.mim\" --ini D:\\AIV\\MODEL\\[1]TireInspect_PC3_DEPLOY\\alg_depth_preproc.ini --cal 3 --dump min --stage NONE",
      "rc": 0,
-     "elapsed_s": 3.7,
+     "elapsed_s": 3.55,
      "stderr_tail": "",
-     "exe_total_ms": 1516.0195,
+     "exe_total_ms": 1504.1425,
      "exe_ref": {
       "path": "H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\1639390184_2000026091709423060\\24_SWD_Sh_R_D_Proc.mim",
       "exact_pct": 43.9288015463918,
@@ -695,7 +695,7 @@
      "auto_vs_none_exact_pct": 43.92880154639175
     }
    ],
-   "case_elapsed_s": 17.3
+   "case_elapsed_s": 16.6
   },
   "T3": {
    "desc": "exe result vs python reference simulate.py withStage path (remove_stage + process_high_curvature)",
@@ -711,7 +711,7 @@
       -200.0,
       422.0
      ],
-     "py_elapsed_s": 2.18,
+     "py_elapsed_s": 1.84,
      "metrics_exe_vs_py": {
       "total": 15892480,
       "exact_pct": 99.98487964118878,
@@ -752,7 +752,7 @@
       -242.0,
       488.0
      ],
-     "py_elapsed_s": 1.92,
+     "py_elapsed_s": 1.82,
      "metrics_exe_vs_py": {
       "total": 15892480,
       "exact_pct": 99.98799432184278,
@@ -793,7 +793,7 @@
       -177.0,
       420.0
      ],
-     "py_elapsed_s": 2.07,
+     "py_elapsed_s": 1.85,
      "metrics_exe_vs_py": {
       "total": 15892480,
       "exact_pct": 99.98450210413982,
@@ -834,7 +834,7 @@
       -229.0,
       483.0
      ],
-     "py_elapsed_s": 2.08,
+     "py_elapsed_s": 1.77,
      "metrics_exe_vs_py": {
       "total": 15892480,
       "exact_pct": 99.98657855790916,
@@ -875,7 +875,7 @@
       -715.0,
       277.0
      ],
-     "py_elapsed_s": 0.81,
+     "py_elapsed_s": 0.74,
      "metrics_exe_vs_py": {
       "total": 6815744,
       "exact_pct": 99.97854966383714,
@@ -916,7 +916,7 @@
       -492.0,
       1000.0
      ],
-     "py_elapsed_s": 3.3,
+     "py_elapsed_s": 2.9,
      "metrics_exe_vs_py": {
       "total": 23590400,
       "exact_pct": 99.9936245252306,
@@ -948,7 +948,7 @@
      "status": "PASS"
     }
    ],
-   "case_elapsed_s": 16.6
+   "case_elapsed_s": 14.8
   },
   "T4": {
    "desc": "tire2 batch with --fovproc: 8 item folders + batch.json; per-item metrics vs _Proc; individual runs must equal batch outputs",
@@ -1167,9 +1167,9 @@
      "issues": [],
      "cmd": "E:\\Dev\\DepthPreprocSim\\build\\Release\\depth_sim.exe run --in \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\2000026091715281105\\5_SWU_Sh_L_D.mim\" --out E:\\Dev\\DepthPreprocSim\\tests\\results\\T4\\run_5_11 --ref \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\2000026091715281105\\11_SWU_Sh_L_D_Proc.mim\" --ini D:\\AIV\\MODEL\\[1]TireInspect_PC3_DEPLOY\\alg_depth_preproc.ini --cal 3 --dump min",
      "rc": 0,
-     "elapsed_s": 2.72,
+     "elapsed_s": 2.76,
      "stderr_tail": "",
-     "exe_total_ms": 1113.5205,
+     "exe_total_ms": 1178.5581,
      "exe_ref": {
       "path": "H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\2000026091715281105\\11_SWU_Sh_L_D_Proc.mim",
       "exact_pct": 100,
@@ -1232,9 +1232,9 @@
      "issues": [],
      "cmd": "E:\\Dev\\DepthPreprocSim\\build\\Release\\depth_sim.exe run --in \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\2000026091715281105\\7_SWU_Sh_R_D.mim\" --out E:\\Dev\\DepthPreprocSim\\tests\\results\\T4\\run_7_12 --ref \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\2000026091715281105\\12_SWU_Sh_R_D_Proc.mim\" --ini D:\\AIV\\MODEL\\[1]TireInspect_PC3_DEPLOY\\alg_depth_preproc.ini --cal 3 --dump min",
      "rc": 0,
-     "elapsed_s": 2.86,
+     "elapsed_s": 2.85,
      "stderr_tail": "",
-     "exe_total_ms": 1163.106,
+     "exe_total_ms": 1223.7787,
      "exe_ref": {
       "path": "H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\2000026091715281105\\12_SWU_Sh_R_D_Proc.mim",
       "exact_pct": 100,
@@ -1297,9 +1297,9 @@
      "issues": [],
      "cmd": "E:\\Dev\\DepthPreprocSim\\build\\Release\\depth_sim.exe run --in \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\2000026091715281105\\17_SWD_Sh_L_D.mim\" --out E:\\Dev\\DepthPreprocSim\\tests\\results\\T4\\run_17_23 --ref \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\2000026091715281105\\23_SWD_Sh_L_D_Proc.mim\" --ini D:\\AIV\\MODEL\\[1]TireInspect_PC3_DEPLOY\\alg_depth_preproc.ini --cal 3 --dump min",
      "rc": 0,
-     "elapsed_s": 2.81,
+     "elapsed_s": 2.78,
      "stderr_tail": "",
-     "exe_total_ms": 1153.3265,
+     "exe_total_ms": 1196.2695,
      "exe_ref": {
       "path": "H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\2000026091715281105\\23_SWD_Sh_L_D_Proc.mim",
       "exact_pct": 100,
@@ -1362,9 +1362,9 @@
      "issues": [],
      "cmd": "E:\\Dev\\DepthPreprocSim\\build\\Release\\depth_sim.exe run --in \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\2000026091715281105\\19_SWD_Sh_R_D.mim\" --out E:\\Dev\\DepthPreprocSim\\tests\\results\\T4\\run_19_24 --ref \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\2000026091715281105\\24_SWD_Sh_R_D_Proc.mim\" --ini D:\\AIV\\MODEL\\[1]TireInspect_PC3_DEPLOY\\alg_depth_preproc.ini --cal 3 --dump min",
      "rc": 0,
-     "elapsed_s": 2.95,
+     "elapsed_s": 2.8,
      "stderr_tail": "",
-     "exe_total_ms": 1169.0508,
+     "exe_total_ms": 1199.9722,
      "exe_ref": {
       "path": "H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\2000026091715281105\\24_SWD_Sh_R_D_Proc.mim",
       "exact_pct": 100,
@@ -1427,9 +1427,9 @@
      "issues": [],
      "cmd": "E:\\Dev\\DepthPreprocSim\\build\\Release\\depth_sim.exe run --in \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\2000026091715281105\\3_SWU_Bead_D.mim\" --out E:\\Dev\\DepthPreprocSim\\tests\\results\\T4\\run_3_10 --ref \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\2000026091715281105\\10_SWU_Bead_D_Proc.mim\" --ini D:\\AIV\\MODEL\\[1]TireInspect_PC3_DEPLOY\\alg_depth_preproc.ini --cal 2 --dump min",
      "rc": 0,
-     "elapsed_s": 1.56,
+     "elapsed_s": 1.39,
      "stderr_tail": "",
-     "exe_total_ms": 562.3727,
+     "exe_total_ms": 592.4109,
      "exe_ref": {
       "path": "H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\2000026091715281105\\10_SWU_Bead_D_Proc.mim",
       "exact_pct": 100,
@@ -1492,9 +1492,9 @@
      "issues": [],
      "cmd": "E:\\Dev\\DepthPreprocSim\\build\\Release\\depth_sim.exe run --in \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\2000026091715281105\\1_SWU_Cen_D.mim\" --out E:\\Dev\\DepthPreprocSim\\tests\\results\\T4\\run_1_9 --ref \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\2000026091715281105\\9_SWU_Cen_D_Proc.mim\" --ini D:\\AIV\\MODEL\\[1]TireInspect_PC3_DEPLOY\\alg_depth_preproc.ini --cal 1 --dump min",
      "rc": 0,
-     "elapsed_s": 6.92,
+     "elapsed_s": 6.71,
      "stderr_tail": "",
-     "exe_total_ms": 3005.2496,
+     "exe_total_ms": 2943.2216,
      "exe_ref": {
       "path": "H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\2000026091715281105\\9_SWU_Cen_D_Proc.mim",
       "exact_pct": 100,
@@ -1550,7 +1550,7 @@
    ],
    "cmd": "E:\\Dev\\DepthPreprocSim\\build\\Release\\depth_sim.exe batch --folder \"H:\\000. PJT\\01. HankookTire\\03_이미지\\PC3\\2000026091715281105\" --out E:\\Dev\\DepthPreprocSim\\tests\\results\\T4\\batch --fovproc D:\\AIV\\MODEL\\[1]TireInspect_PC3_DEPLOY\\FOVPROC.ini --ini D:\\AIV\\MODEL\\[1]TireInspect_PC3_DEPLOY\\alg_depth_preproc.ini --dump min",
    "rc": 0,
-   "elapsed_s": 27.02,
+   "elapsed_s": 27.35,
    "stderr_tail": "",
    "batch_json_items": 8,
    "item_folders": [
@@ -1564,7 +1564,7 @@
     "19_SWD_Sh_R_D"
    ],
    "status": "PASS",
-   "case_elapsed_s": 54.4
+   "case_elapsed_s": 52.8
   },
   "T5": {
    "desc": "CLI error paths: missing input -> exit 3 + stderr JSON; bad --patch/--overlap -> exit 2",
@@ -1607,7 +1607,7 @@
      "status": "PASS"
     }
    ],
-   "case_elapsed_s": 0.2
+   "case_elapsed_s": 0.1
   }
  }
 }

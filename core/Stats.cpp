@@ -51,7 +51,7 @@ RunStats ComputeRunStats(const cv::Mat& raw32f, const SimResult& r)
     }
 
     s.z_min = r.z_min; s.z_max = r.z_max;
-    s.unit_mm_per_scaled_unit = (r.z_max - r.z_min) / 65536.0;
+    s.unit_mm_per_scaled_unit = r.unit_mm_override > 0 ? r.unit_mm_override : (r.z_max - r.z_min) / 65536.0;
     s.clip_low = r.clip_low; s.clip_high = r.clip_high;
     s.low_mm = r.clip_low * s.unit_mm_per_scaled_unit;
     s.high_mm = r.clip_high * s.unit_mm_per_scaled_unit;
@@ -208,8 +208,14 @@ std::string BuildStatsJson(const StatsContext& c)
     o += ", \"type\": " + Q(c.type) + ", \"break_kernel\": " + JsonNum(p.break_kernel);
     o += ", \"exp\": {\"use_ini_pct\": " + B(p.exp.use_ini_pct) + ", \"valid_pct\": " + B(p.exp.valid_pct)
         + ", \"masked_median\": " + B(p.exp.masked_median) + ", \"null_value\": " + JsonNum(p.exp.null_value)
-        + ", \"fill_holes\": " + JsonNum(p.exp.fill_holes) + "}";
-    o += ", \"dll_identical\": " + B(r.dll_identical) + ", \"capture_identical\": " + B(r.capture_identical) + "},\n";
+        + ", \"fill_holes\": " + JsonNum(p.exp.fill_holes) + ", \"stage_restore\": " + B(p.exp.stage_restore)
+        + ", \"abs_mm\": " + JsonNum(p.exp.abs_mm)
+        + ", \"v2\": {\"on\": " + B(p.exp.v2.on) + ", \"range_mm\": " + JsonNum(p.exp.v2.range_mm) + ", \"edge\": " + JsonNum(p.exp.v2.edge)
+        + ", \"slope\": " + B(p.exp.v2.slope) + ", \"fill\": " + B(p.exp.v2.fill) + ", \"env_median\": " + JsonNum(p.exp.v2.env_median) + ", \"mode\": " + JsonNum(p.exp.v2.mode)
+        + ", \"zone_thr\": " + JsonNum(p.exp.v2.zone_thr) + ", \"zone_out_mm\": " + JsonNum(p.exp.v2.zout_mm) + ", \"zone_out2_mm\": " + JsonNum(p.exp.v2.zout2_mm)
+        + ", \"rm_win\": " + JsonNum(p.exp.v2.rm_win) + "}}";
+    o += ", \"dll_identical\": " + B(r.dll_identical) + ", \"capture_identical\": " + B(r.capture_identical)
+        + ", \"v2_zone_pct\": " + JsonNum(r.v2_zone_pct) + ", \"v2_rejected_pct\": " + JsonNum(r.v2_rejected_pct) + ", \"v2_filled_pct\": " + JsonNum(r.v2_filled_pct) + "},\n";
 
     const SimTiming& t = r.timing;
     o += " \"timing_ms\": {\"read\": " + JsonNum(c.read_ms) + ", \"remove_stage\": " + JsonNum(t.remove_stage) + ", \"scale\": " + JsonNum(t.scale)
